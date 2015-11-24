@@ -145,7 +145,7 @@ void Dospecial(int key, int x, int y)
 }
 void Dokeyboard(unsigned char value, int x, int y)
 {
-	p[0]->Putbomb();
+//	p[0]->Putbomb();
 //Dospecial()과 다를건 없다 여기선 스페이스바입력을 받아 폭탄만 설치하면 된다.
 //즉 player.Putbomb()만 써주면 된다.
 }
@@ -153,6 +153,8 @@ void Update(int value)
 {
 //각 객체마다 갱신해줘야 하는 내용이 들어간다.
 //s_map구조체안을 다 둘러보면서 갱신해줄지도 모르겠다.
+	for (int i = 0; i < enemymax && e[i] != NULL; i++)
+		e[i]->Move();
 	p[0]->Moving();
 	for (int i = 0; i < enemymax && e[i] != NULL; i++)
 		e[i]->Moving();
