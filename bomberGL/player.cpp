@@ -74,26 +74,33 @@ void player::Moving()
 			if (right)
 			{
 				type[positionY][positionX++] = 0;
-				type[positionY][positionX] = 2;
-
+				type[positionY][positionX] = 1;
+				object[positionY][positionX] = object[positionY][positionX - 1];
+				object[positionY][positionX - 1] = NULL;
 			}
 
 			else if (left)
 			{
 				type[positionY][positionX--] = 0;
-				type[positionY][positionX] = 2;
+				type[positionY][positionX] = 1;
+				object[positionY][positionX] = object[positionY][positionX + 1];
+				object[positionY][positionX + 1] = NULL;
 			}
 
 			else if (up)
 			{
 				type[positionY--][positionX] = 0;
-				type[positionY][positionX] = 2;
+				type[positionY][positionX] = 1;
+				object[positionY][positionX] = object[positionY + 1][positionX];
+				object[positionY + 1][positionX] = NULL;
 			}
 
 			else if (down)
 			{
 				type[positionY++][positionX] = 0;
-				type[positionY][positionX] = 2;
+				type[positionY][positionX] = 1;
+				object[positionY][positionX] = object[positionY - 1][positionX];
+				object[positionY - 1][positionX] = NULL;
 			}
 		}
 
@@ -113,4 +120,8 @@ void player::Moving()
 	//speed가 기존 speedcount의 역할을 하고 60/speed를 한 스텝으로 잡고 움직이면서
 	//speedcount가 speed와 같아지면 그좌표로 정확히 꽂아주는 방식
 	//그리고 speedcount가 speed의 반을 넘으면 그때 맵상의 좌표도 옮겨 주는걸로
+}
+void player :: Draw()
+{
+
 }
