@@ -1,4 +1,9 @@
 #pragma once
+#ifndef __BLOCK_H__
+#define __BLOCK_H__
+
+#include "MapManager.h"
+
 class block
 {
 public:
@@ -9,3 +14,9 @@ public:
 	~block();
 };
 
+
+extern short type[15][20];
+extern void *object[15][20];
+
+
+#endif

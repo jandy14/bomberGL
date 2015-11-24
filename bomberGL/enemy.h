@@ -5,7 +5,7 @@
 #include "MapManager.h"
 #include <random>
 
-class enemy : MapManager
+class enemy 
 {
 private:
 	int speedCountMax, speedCount;			// Enemy 속도
@@ -21,9 +21,13 @@ public:
 	enemy(int positionX, int positionY);	// Enemy 소환
 	~enemy();								// Enemy 소멸
 	void Move();							// 입력값을 받아서 움직임을 Moving()에 명령
-	void Draw();							// 객체의 이미지를 그려줌
+	void Draw(GLubyte *image);				// 객체의 이미지를 그려줌
 	void Moving();							// move()에서 받은 명령을 시행(pixelx,y 설정)                                  
 };
 
+
+
+extern short type[15][20];
+extern void *object[15][20];
 
 #endif

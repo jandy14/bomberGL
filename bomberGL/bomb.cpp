@@ -2,7 +2,7 @@
 
 
 
-bomb::bomb()
+bomb::bomb(int x, int y)
 {
 }
 

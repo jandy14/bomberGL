@@ -3,6 +3,7 @@
 enemy::enemy(int positionX, int positionY)
 {
 	speedCount = 0;
+	speedCountMax = 12;
 	temporaryValueX = temporaryValueY = 0;
 	right = left = up = down = false;
 	moving = false;
@@ -67,23 +68,25 @@ bool enemy::Check()
 		}
 	}
 
+	right = left = up = down = false;
 	return false;
 }
 
 void enemy::Move()
 {
+	int randomNumber;
+
 	if (!moving)
 	{
-		/* 난수 생성 */
 		std::random_device rd;
 		std::mt19937_64 rng(rd());
-		std::uniform_int_distribution<__int64> range(1, 4);
-
-		int randomNumber = range(rng);
-
+		std::uniform_int_distribution<__int64> range(1, 10);
 		while (!Check())
 		{
-			/* 1 : 오른쪽, 2 : 위, 3 : 왼쪽, 4 : 아래 */
+			/* 난수 생성 */
+			randomNumber = range(rng);
+
+			/* 1 : 오른쪽, 2 : 위, 3 : 왼쪽, 4 : 아래, 5 : x */
 			switch (randomNumber)
 			{
 			case 1:
@@ -98,9 +101,13 @@ void enemy::Move()
 			case 4:
 				down = true;
 				break;
+			default:
+				goto Here;
+				//break;
 			}
 		}
 
+		Here:
 		drawPositionX = 60 * positionX;
 		drawPositionY = 60 * (positionY + 1);
 		moving = true;
@@ -109,9 +116,35 @@ void enemy::Move()
 	return;
 }
 
-void enemy::Draw()
+void enemy::Draw(GLubyte *image)
 {
+	int x, y;
+	int count = 0;
+	x = this->drawPositionX;
+	y = this->drawPositionY;
 
+	for (int pixelindex = 0; pixelindex < 10800; pixelindex += 3)
+	{
+		count++;
+		if (image[pixelindex] + image[pixelindex + 1] + image[pixelindex + 2] != 765)
+		{
+			glBegin(GL_POINTS);
+			{
+				glColor3ub(image[pixelindex + 2], image[pixelindex + 1], image[pixelindex]);
+				glVertex2f(ConversionX(x), ConversionY(y));
+			}
+			glEnd();
+		}
+
+		if (count == 60)
+		{
+			y--;
+			x = this->drawPositionX;
+			count = 0;
+		}
+
+		x++;
+	}
 }
 
 void enemy::Moving()

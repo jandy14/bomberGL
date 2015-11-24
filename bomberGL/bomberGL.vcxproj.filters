@@ -21,33 +21,27 @@
     <ClCompile Include="player.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="bomb.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="enemy.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="block.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MapManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="block.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bomb.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="enemy.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="block.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="MapManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="block.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

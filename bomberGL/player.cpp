@@ -1,7 +1,5 @@
 #include "player.h"
 #include"MapManager.h"
-#include <windows.h>
-#include<GL/glut.h>
 
 player::player(int x, int y)
 {

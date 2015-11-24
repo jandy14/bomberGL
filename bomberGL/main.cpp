@@ -9,11 +9,7 @@
 #include "player.h"
 #include "enemy.h"
 #include "block.h"
-#include "bomb.h"
-//===================================================================정의
-#define WIDTH 1200
-#define HEIGHT 900
-#define SIZE 60
+//#include "bomb.h"
 //===================================================================함수선언
 void glutInit();
 void Resize(int, int);
@@ -21,27 +17,17 @@ void Dodisplay();
 void Dospecial(int, int, int);
 void Dokeyboard(unsigned char, int, int);
 void Update(int);
-float ConversionX(float x)
-{
-	return (x - WIDTH / 2) / (WIDTH / 2);
-}
-float ConversionY(float y)
-{
-	return (HEIGHT / 2 - y) / (HEIGHT / 2);
-}
+GLubyte *LoadBmp(const char *path);
 //===================================================================변수선언
-/*typedef struct
-{
-	short type;
-	void *object;
-}s_map;*/
-//s_map map[15][20];
-MapManager map;
 player **p;
 enemy **e;
 block **b;
 int enemymax;
 int blockmax;
+GLubyte *breakableBlock;
+GLubyte *unbreakableBlock;
+extern short type[15][20];
+extern void * object[15][20];
 //===================================================================메인
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdParam, int nCmdShow)
 {
@@ -65,7 +51,7 @@ void glutInit()
 	int blockcount = 0;
 	int enemycount = 0;
 	std::ifstream f;
-	f.open("Map/GameInfo.txt");
+	f.open("Info/mapinfo.txt");
 //===============================================count를 세주기 위한 반복구문
 	for (int i = 0; i < 15; i++)
 	{
@@ -82,11 +68,6 @@ void glutInit()
 	p = (player **)malloc(sizeof(player *));	//어차피 하나긴 한데 통일했다;
 	e = (enemy **)malloc(sizeof(enemy *)*enemycount);
 	b = (block **)malloc(sizeof(block *)*blockcount);
-//생성에 두가지방법중에서 어떤걸 할지 골라야한다
-//하나는 원래 방식을 유지하는것
-//또하나는 싱글포인터에 new를 써주는것
-//new를 쓰게 되면 생성자를 쓸수가 없어서 따로 초기화함수를 만들어줘야한다.
-//어떤게 맘에 드노ㅋ
 //===============================================파일포인터를 다시 처음으로
 	f.clear();		//버퍼정리
 	f.seekg(0, std::ios::beg);		//파일포인터를 맨앞으로
@@ -99,27 +80,30 @@ void glutInit()
 		for (int j = 0; j < 20; j++)
 		{
 			f >> a;
-			if (a < 10)
+			if (a > 10)
 			{
 				b[--blockcount] = new block(j, i);//맵상xy좌표
-				map.type[i][j] = 10;
-				map.object[i][j] = b[blockcount];
+				type[i][j] = 10;
+				object[i][j] = b[blockcount];
 			}
 			else if (a == 2)
 			{
 				e[--enemycount] = new enemy(j, i);//맵상xy좌표
-				map.type[i][j] = 2;
-				map.object[i][j] = e[enemycount];
+				type[i][j] = 2;
+				object[i][j] = e[enemycount];
 			}
 			else if (a == 1)
 			{
 				p[0] = new player(j, i);//맵상xy좌표
-				map.type[i][j] = 1;
-				map.object[i][j] = p[0];
+				type[i][j] = 1;
+				object[i][j] = p[0];
 			}
 		}
 	}
 	f.close();
+
+	unbreakableBlock = LoadBmp("Image/Block/Brick1.bmp");
+	breakableBlock = LoadBmp("Image/Block/Brick2.bmp");
 }
 void Resize(int width, int height)
 {
@@ -131,11 +115,11 @@ void Resize(int width, int height)
 void Dodisplay()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	p[0]->Draw();
+//	p[0]->Draw();
 	for (int i = 0; i < enemymax && e[i] != NULL; i++)
-		e[i]->Draw();
-	for (int i = 0; i < blockmax && b[i] != NULL; i++)
-		b[i]->Draw();
+		e[i]->Draw(unbreakableBlock);
+//	for (int i = 0; i < blockmax && b[i] != NULL; i++)
+//		b[i]->Draw();
 	glutSwapBuffers();
 }
 void Dospecial(int key, int x, int y)
@@ -163,4 +147,26 @@ void Update(int value)
 
 	glutPostRedisplay();
 	glutTimerFunc(30, Update, 1);
+}
+GLubyte *LoadBmp(const char *path)
+{
+	HANDLE hFile;
+	DWORD FileSize, dwRead;
+	BITMAPFILEHEADER *fh = NULL;
+	BYTE *pRaster;
+
+	hFile = CreateFileA(path, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (hFile == INVALID_HANDLE_VALUE) return NULL;
+	FileSize = GetFileSize(hFile, NULL);
+	fh = new BITMAPFILEHEADER[FileSize];
+	ReadFile(hFile, fh, FileSize, &dwRead, NULL);
+	CloseHandle(hFile);
+
+	int len = FileSize - fh->bfOffBits;
+	pRaster = new GLubyte[len];
+	memcpy(pRaster, (BYTE *)fh + fh->bfOffBits, len);
+
+	free(fh);
+	return pRaster;
 }
