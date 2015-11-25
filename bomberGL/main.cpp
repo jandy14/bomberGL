@@ -119,7 +119,7 @@ void Dodisplay()
 	glClear(GL_COLOR_BUFFER_BIT);
 	p[0]->Draw();
 	for (int i = 0; i < enemymax && e[i] != NULL; i++)
-		//e[i]->Draw(blockimage[0]);
+		e[i]->Draw();
 	for (int i = 0; i < blockmax && b[i] != NULL; i++)
 		b[i]->Draw();
 	glutSwapBuffers();

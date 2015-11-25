@@ -1,6 +1,6 @@
 #include "block.h"
 
-block::block(int x, int y,GLubyte *image)
+block::block(int x, int y, GLubyte *image)
 {
 	this->image = image;
 	speedCount = 0;
@@ -48,6 +48,11 @@ void block::Draw()
 
 		x++;
 	}
+}
+
+bool block::Check()
+{
+	return false;
 }
 
 void block::Moving()
