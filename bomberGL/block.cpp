@@ -2,7 +2,7 @@
 
 block::block(int x, int y,GLubyte *image)
 {
-	image = i;
+	this->image = image;
 	speedCount = 0;
 	speedCountMax = 12;
 	temporaryValueX = temporaryValueY = 0;

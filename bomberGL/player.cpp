@@ -10,10 +10,34 @@ player::player(int x, int y)
 	maxbomb = 1;
 	nowbomb = 1;
 	power = 1;
-	speedCountMax = 20;
+	speedCountMax = 12;
 	speedCount = 0;
 	moving = false;
 	right = left = up = down = false;
+
+	image[0][0] = LoadBmp("Image/player/Right_1.bmp");
+	image[0][1] = LoadBmp("Image/player/Right_2.bmp");
+	image[0][2] = LoadBmp("Image/player/Right_3.bmp");
+	image[0][3] = LoadBmp("Image/player/Right_4.bmp");
+	image[0][4] = LoadBmp("Image/player/Right_5.bmp");
+
+	image[1][0] = LoadBmp("Image/player/Left_1.bmp");
+	image[1][1] = LoadBmp("Image/player/Left_2.bmp");
+	image[1][2] = LoadBmp("Image/player/Left_3.bmp");
+	image[1][3] = LoadBmp("Image/player/Left_4.bmp");
+	image[1][4] = LoadBmp("Image/player/Left_5.bmp");
+
+	image[2][0] = LoadBmp("Image/player/Up_1.bmp");
+	image[2][1] = LoadBmp("Image/player/Up_2.bmp");
+	image[2][2] = LoadBmp("Image/player/Up_3.bmp");
+	image[2][3] = LoadBmp("Image/player/Up_4.bmp");
+	image[2][4] = LoadBmp("Image/player/Up_5.bmp");
+
+	image[3][0] = LoadBmp("Image/player/Down_1.bmp");
+	image[3][1] = LoadBmp("Image/player/Down_2.bmp");
+	image[3][2] = LoadBmp("Image/player/Down_3.bmp");
+	image[3][3] = LoadBmp("Image/player/Down_4.bmp");
+	image[3][4] = LoadBmp("Image/player/Down_5.bmp");
 }
 
 void player::Move(int key)
@@ -27,6 +51,7 @@ void player::Move(int key)
 			{
 				right = true;
 				temporaryValueX = 1;
+				moving = true;
 			}
 			left = up = down = false;
 			break;
@@ -35,6 +60,7 @@ void player::Move(int key)
 			{
 				left = true;
 				temporaryValueX = -1;
+				moving = true;
 			}
 			right = up = down = false;
 			break;
@@ -43,6 +69,7 @@ void player::Move(int key)
 			{
 				up = true;
 				temporaryValueY = -1;
+				moving = true;
 			}
 			left = right = down = false;
 			break;
@@ -51,11 +78,11 @@ void player::Move(int key)
 			{
 				down = true;
 				temporaryValueY = 1;
+				moving = true;
 			}
 			left = up = right = false;
 			break;
 		}
-		moving = true;
 	}
 }
 void player::Moving()
@@ -103,7 +130,7 @@ void player::Moving()
 		}
 
 		/* 타일을 완전히 다 넘어왔는지 체크 */
-		if (speedCountMax == speedCount)
+		if (speedCountMax-1 == speedCount)
 		{
 			moving = false;
 			right = left = up = down = false;
@@ -115,11 +142,26 @@ void player::Moving()
 	}
 
 	return;
-	//speed가 기존 speedcount의 역할을 하고 60/speed를 한 스텝으로 잡고 움직이면서
-	//speedcount가 speed와 같아지면 그좌표로 정확히 꽂아주는 방식
-	//그리고 speedcount가 speed의 반을 넘으면 그때 맵상의 좌표도 옮겨 주는걸로
 }
 void player :: Draw()
 {
+	if (moving)
+	{
+		int i;
+		if (right) i = 0;
+		else if (left)i = 1;
+		else if (up)i = 2;
+		else if (down)i = 3;
 
+		if (speedCount * 5 / 4 > speedCountMax) DrawFunc(image[i][4], drawPositionX, drawPositionY);
+		else if (speedCount * 5 / 3 > speedCountMax) DrawFunc(image[i][3], drawPositionX, drawPositionY);
+		else if (speedCount * 5 / 2 > speedCountMax) DrawFunc(image[i][2], drawPositionX, drawPositionY);
+		else if (speedCount * 5 > speedCountMax) DrawFunc(image[i][1], drawPositionX, drawPositionY);
+		else DrawFunc(image[i][0], drawPositionX, drawPositionY);
+
+	}
+	else
+	{
+		DrawFunc(image[0][0], drawPositionX, drawPositionY);
+	}
 }

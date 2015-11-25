@@ -82,13 +82,13 @@ void glutInit()
 			if (a == 12)
 			{
 				b[--blockcount] = new block(j, i, LoadBmp("Image/Block/Brick2.bmp"));//¸Ê»óxyÁÂÇ¥
-				type[i][j] = 10;
+				type[i][j] = 12;
 				object[i][j] = b[blockcount];
 			}
 			else if (a == 11)
 			{
 				b[--blockcount] = new block(j, i, LoadBmp("Image/Block/Brick1.bmp"));//¸Ê»óxyÁÂÇ¥
-				type[i][j] = 10;
+				type[i][j] = 11;
 				object[i][j] = b[blockcount];
 			}
 			else if (a == 2)
@@ -117,7 +117,7 @@ void Resize(int width, int height)
 void Dodisplay()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-//	p[0]->Draw();
+	p[0]->Draw();
 	for (int i = 0; i < enemymax && e[i] != NULL; i++)
 		//e[i]->Draw(blockimage[0]);
 	for (int i = 0; i < blockmax && b[i] != NULL; i++)
