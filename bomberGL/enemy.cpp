@@ -10,6 +10,8 @@ enemy::enemy(int positionX, int positionY)
 	this->positionX = positionX;
 	this->positionY = positionY;
 
+
+
 	//InitMap(2, , positionX, positionY);
 }
 
@@ -67,8 +69,7 @@ bool enemy::Check()
 			}
 		}
 	}
-
-	right = left = up = down = false;
+	
 	return false;
 }
 
@@ -76,6 +77,7 @@ void enemy::Move()
 {
 	int randomNumber;
 
+	right = left = up = down = false;
 	if (!moving)
 	{
 		std::random_device rd;

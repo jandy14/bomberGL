@@ -11,7 +11,7 @@
 
 float ConversionX(float x);
 float ConversionY(float y);
-
+GLubyte *LoadBmp(const char *path);
 
 
 #endif

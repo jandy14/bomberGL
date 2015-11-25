@@ -14,6 +14,7 @@ private:
 	int temporaryValueX, temporaryValueY;	// block 방향값
 	bool moving;							// 움직임 상태
 	bool right, left, up, down;				// 움직이는 방향
+	bool breakable;							// 파괴가능한 벽돌인지 판단
 
 	bool Check();							// movable 체크
 public:

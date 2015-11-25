@@ -24,9 +24,6 @@ enemy **e;
 block **b;
 int enemymax;
 int blockmax;
-GLubyte *breakableBlock;
-GLubyte *unbreakableBlock;
-GLubyte *blockimage[2];
 extern short type[15][20];
 extern void * object[15][20];
 //===================================================================∏ﬁ¿Œ
@@ -52,11 +49,7 @@ void glutInit()
 	int blockcount = 0;
 	int enemycount = 0;
 	std::ifstream f;
-//===============================================¿ÃπÃ¡ˆ π◊ ∆ƒ¿œ ∑ŒµÂ
-	unbreakableBlock = LoadBmp("Image/Block/Brick1.bmp");
-	breakableBlock = LoadBmp("Image/Block/Brick2.bmp");
-	blockimage[0] = LoadBmp("Image/Block/Brick1.bmp");
-	blockimage[1] = LoadBmp("Image/Block/Brick2.bmp");
+
 	f.open("Info/mapinfo.txt");
 //===============================================count∏¶ ºº¡÷±‚ ¿ß«— π›∫π±∏πÆ
 	for (int i = 0; i < 15; i++)
@@ -88,13 +81,13 @@ void glutInit()
 			f >> a;
 			if (a == 12)
 			{
-				b[--blockcount] = new block(j, i, blockimage[1]);//∏ ªÛxy¡¬«•
+				b[--blockcount] = new block(j, i, LoadBmp("Image/Block/Brick2.bmp"));//∏ ªÛxy¡¬«•
 				type[i][j] = 10;
 				object[i][j] = b[blockcount];
 			}
 			else if (a == 11)
 			{
-				b[--blockcount] = new block(j, i, blockimage[0]);//∏ ªÛxy¡¬«•
+				b[--blockcount] = new block(j, i, LoadBmp("Image/Block/Brick1.bmp"));//∏ ªÛxy¡¬«•
 				type[i][j] = 10;
 				object[i][j] = b[blockcount];
 			}
@@ -126,7 +119,7 @@ void Dodisplay()
 	glClear(GL_COLOR_BUFFER_BIT);
 //	p[0]->Draw();
 	for (int i = 0; i < enemymax && e[i] != NULL; i++)
-		e[i]->Draw(blockimage[0]);
+		//e[i]->Draw(blockimage[0]);
 	for (int i = 0; i < blockmax && b[i] != NULL; i++)
 		b[i]->Draw();
 	glutSwapBuffers();
@@ -156,26 +149,4 @@ void Update(int value)
 		b[i]->Moving();
 
 	glutPostRedisplay();
-}
-GLubyte *LoadBmp(const char *path)
-{
-	HANDLE hFile;
-	DWORD FileSize, dwRead;
-	BITMAPFILEHEADER *fh = NULL;
-	BYTE *pRaster;
-
-	hFile = CreateFileA(path, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-
-	if (hFile == INVALID_HANDLE_VALUE) return NULL;
-	FileSize = GetFileSize(hFile, NULL);
-	fh = new BITMAPFILEHEADER[FileSize];
-	ReadFile(hFile, fh, FileSize, &dwRead, NULL);
-	CloseHandle(hFile);
-
-	int len = FileSize - fh->bfOffBits;
-	pRaster = new GLubyte[len];
-	memcpy(pRaster, (BYTE *)fh + fh->bfOffBits, len);
-
-	free(fh);
-	return pRaster;
 }

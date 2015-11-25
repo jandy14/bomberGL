@@ -1,6 +1,6 @@
 #include "block.h"
 
-block::block(int x, int y,GLubyte *i)
+block::block(int x, int y,GLubyte *image)
 {
 	image = i;
 	speedCount = 0;
