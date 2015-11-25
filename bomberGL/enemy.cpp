@@ -151,7 +151,7 @@ void enemy::Moving()
 			if (right)
 			{
 				type[positionY][positionX++] = 0;
-				type[positionY][positionX] = 1;
+				type[positionY][positionX] = 2;
 				object[positionY][positionX] = object[positionY][positionX - 1];
 				object[positionY][positionX - 1] = NULL;
 			}
@@ -159,7 +159,7 @@ void enemy::Moving()
 			else if (left)
 			{
 				type[positionY][positionX--] = 0;
-				type[positionY][positionX] = 1;
+				type[positionY][positionX] = 2;
 				object[positionY][positionX] = object[positionY][positionX + 1];
 				object[positionY][positionX + 1] = NULL;
 			}
@@ -167,7 +167,7 @@ void enemy::Moving()
 			else if (up)
 			{
 				type[positionY--][positionX] = 0;
-				type[positionY][positionX] = 1;
+				type[positionY][positionX] = 2;
 				object[positionY][positionX] = object[positionY + 1][positionX];
 				object[positionY + 1][positionX] = NULL;
 			}
@@ -175,7 +175,7 @@ void enemy::Moving()
 			else if (down)
 			{
 				type[positionY++][positionX] = 0;
-				type[positionY][positionX] = 1;
+				type[positionY][positionX] = 2;
 				object[positionY][positionX] = object[positionY - 1][positionX];
 				object[positionY - 1][positionX] = NULL;
 			}
