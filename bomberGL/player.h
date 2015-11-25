@@ -5,8 +5,7 @@
 
 class player
 {
-//private:
-public:
+private:
 	int positionX, positionY;		//맵상에서의 좌표
 	int drawPositionX, drawPositionY;	//그림이 그려질 좌표
 	int speedCountMax, speedCount;
@@ -18,7 +17,7 @@ public:
 	bool movingmap;		//이동중에 맵상에서 옮겨졌는지 확인
 	bool right, left, up, down;//현재 움직이는 상태
 	bool Check();		//move()에서 받은 입력값이 갈수 있는곳인지 확인(갈수 있으면 TRUE)??필요없나??ㅋ
-//public:
+public:
 	player(int x, int y);
 	void Move(int key);		//입력값을 받아서 움직임을 Moving()에 명령
 	void Draw();		//객체의 이미지를 그려줌

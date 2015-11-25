@@ -1,5 +1,4 @@
 #include "player.h"
-#include"MapManager.h"
 
 player::player(int x, int y)
 {
@@ -7,6 +6,7 @@ player::player(int x, int y)
 	positionY = y;
 	drawPositionX = x * 60;
 	drawPositionY = (y * 60) + 60;
+	temporaryValueX = temporaryValueY = 0;
 	maxbomb = 1;
 	nowbomb = 1;
 	power = 1;

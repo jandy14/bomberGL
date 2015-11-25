@@ -26,6 +26,7 @@ int enemymax;
 int blockmax;
 GLubyte *breakableBlock;
 GLubyte *unbreakableBlock;
+GLubyte *blockimage[2];
 extern short type[15][20];
 extern void * object[15][20];
 //===================================================================메인
@@ -51,6 +52,11 @@ void glutInit()
 	int blockcount = 0;
 	int enemycount = 0;
 	std::ifstream f;
+//===============================================이미지 및 파일 로드
+	unbreakableBlock = LoadBmp("Image/Block/Brick1.bmp");
+	breakableBlock = LoadBmp("Image/Block/Brick2.bmp");
+	blockimage[0] = LoadBmp("Image/Block/Brick1.bmp");
+	blockimage[1] = LoadBmp("Image/Block/Brick2.bmp");
 	f.open("Info/mapinfo.txt");
 //===============================================count를 세주기 위한 반복구문
 	for (int i = 0; i < 15; i++)
@@ -80,9 +86,15 @@ void glutInit()
 		for (int j = 0; j < 20; j++)
 		{
 			f >> a;
-			if (a > 10)
+			if (a == 12)
 			{
-				b[--blockcount] = new block(j, i);//맵상xy좌표
+				b[--blockcount] = new block(j, i, blockimage[1]);//맵상xy좌표
+				type[i][j] = 10;
+				object[i][j] = b[blockcount];
+			}
+			else if (a == 11)
+			{
+				b[--blockcount] = new block(j, i, blockimage[0]);//맵상xy좌표
 				type[i][j] = 10;
 				object[i][j] = b[blockcount];
 			}
@@ -101,9 +113,6 @@ void glutInit()
 		}
 	}
 	f.close();
-
-	unbreakableBlock = LoadBmp("Image/Block/Brick1.bmp");
-	breakableBlock = LoadBmp("Image/Block/Brick2.bmp");
 }
 void Resize(int width, int height)
 {
@@ -117,9 +126,9 @@ void Dodisplay()
 	glClear(GL_COLOR_BUFFER_BIT);
 //	p[0]->Draw();
 	for (int i = 0; i < enemymax && e[i] != NULL; i++)
-		e[i]->Draw(unbreakableBlock);
-//	for (int i = 0; i < blockmax && b[i] != NULL; i++)
-//		b[i]->Draw();
+		e[i]->Draw(blockimage[0]);
+	for (int i = 0; i < blockmax && b[i] != NULL; i++)
+		b[i]->Draw();
 	glutSwapBuffers();
 }
 void Dospecial(int key, int x, int y)
@@ -135,6 +144,7 @@ void Dokeyboard(unsigned char value, int x, int y)
 }
 void Update(int value)
 {
+	glutTimerFunc(30, Update, 1);
 //각 객체마다 갱신해줘야 하는 내용이 들어간다.
 //s_map구조체안을 다 둘러보면서 갱신해줄지도 모르겠다.
 	for (int i = 0; i < enemymax && e[i] != NULL; i++)
@@ -146,7 +156,6 @@ void Update(int value)
 		b[i]->Moving();
 
 	glutPostRedisplay();
-	glutTimerFunc(30, Update, 1);
 }
 GLubyte *LoadBmp(const char *path)
 {
