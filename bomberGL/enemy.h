@@ -27,9 +27,7 @@ public:
 	void Moving();							// move()에서 받은 명령을 시행(pixelx,y 설정)                                  
 };
 
+extern mapStruct map[15][20];
 
-
-extern short type[15][20];
-extern void *object[15][20];
 
 #endif

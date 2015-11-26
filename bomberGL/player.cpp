@@ -49,7 +49,8 @@ void player::Move(int key)
 		{
 		case GLUT_KEY_RIGHT:
 			way = 0;
-			if (type[positionY][positionX + 1] <= 10)
+			//if (type[positionY][positionX + 1] <= 10)
+			if (map[positionY][positionX + 1].NextNode->type <= 10)
 			{
 				right = true;
 				temporaryValueX = 1;
@@ -59,7 +60,8 @@ void player::Move(int key)
 			break;
 		case GLUT_KEY_LEFT:
 			way = 1;
-			if (type[positionY][positionX - 1] <= 10)
+			//if (type[positionY][positionX - 1] <= 10)
+			if (map[positionY][positionX - 1].NextNode->type <= 10)
 			{
 				left = true;
 				temporaryValueX = -1;
@@ -69,7 +71,8 @@ void player::Move(int key)
 			break;
 		case GLUT_KEY_UP:
 			way = 2;
-			if (type[positionY - 1][positionX] <= 10)
+			//if (type[positionY - 1][positionX] <= 10)
+			if (map[positionY - 1][positionX].NextNode->type <= 10)
 			{
 				up = true;
 				temporaryValueY = -1;
@@ -79,7 +82,8 @@ void player::Move(int key)
 			break;
 		case GLUT_KEY_DOWN:
 			way = 3;
-			if (type[positionY + 1][positionX] <= 10)
+			//if (type[positionY + 1][positionX] <= 10)
+			if (map[positionY + 1][positionX].NextNode->type <= 10)
 			{
 				down = true;
 				temporaryValueY = 1;
@@ -103,34 +107,50 @@ void player::Moving()
 		{
 			if (right)
 			{
-				type[positionY][positionX++] = 0;
-				type[positionY][positionX] = 1;
-				object[positionY][positionX] = object[positionY][positionX - 1];
-				object[positionY][positionX - 1] = NULL;
+				//type[positionY][positionX++] = 0;
+				//type[positionY][positionX] = 1;
+				//object[positionY][positionX] = object[positionY][positionX - 1];
+				//object[positionY][positionX - 1] = NULL;
+				map[positionY][positionX++].NextNode->type = 0;
+				map[positionY][positionX].NextNode->type = 1;
+				map[positionY][positionX].NextNode->object = map[positionY][positionX - 1].NextNode->object;
+				map[positionY][positionX - 1].NextNode->object = NULL;
 			}
 
 			else if (left)
 			{
-				type[positionY][positionX--] = 0;
-				type[positionY][positionX] = 1;
-				object[positionY][positionX] = object[positionY][positionX + 1];
-				object[positionY][positionX + 1] = NULL;
+				//type[positionY][positionX--] = 0;
+				//type[positionY][positionX] = 1;
+				//object[positionY][positionX] = object[positionY][positionX + 1];
+				//object[positionY][positionX + 1] = NULL;
+				map[positionY][positionX--].NextNode->type = 0;
+				map[positionY][positionX].NextNode->type = 1;
+				map[positionY][positionX].NextNode->object = map[positionY][positionX + 1].NextNode->object;
+				map[positionY][positionX + 1].NextNode->object = NULL;
 			}
 
 			else if (up)
 			{
-				type[positionY--][positionX] = 0;
-				type[positionY][positionX] = 1;
-				object[positionY][positionX] = object[positionY + 1][positionX];
-				object[positionY + 1][positionX] = NULL;
+				//type[positionY--][positionX] = 0;
+				//type[positionY][positionX] = 1;
+				//object[positionY][positionX] = object[positionY + 1][positionX];
+				//object[positionY + 1][positionX] = NULL;
+				map[positionY--][positionX].NextNode->type = 0;
+				map[positionY][positionX].NextNode->type = 1;
+				map[positionY][positionX].NextNode->object = map[positionY + 1][positionX].NextNode->object;
+				map[positionY + 1][positionX].NextNode->object = NULL;
 			}
 
 			else if (down)
 			{
-				type[positionY++][positionX] = 0;
-				type[positionY][positionX] = 1;
-				object[positionY][positionX] = object[positionY - 1][positionX];
-				object[positionY - 1][positionX] = NULL;
+				//type[positionY++][positionX] = 0;
+				//type[positionY][positionX] = 1;
+				//object[positionY][positionX] = object[positionY - 1][positionX];
+				//object[positionY - 1][positionX] = NULL;
+				map[positionY++][positionX].NextNode->type = 0;
+				map[positionY][positionX].NextNode->type = 1;
+				map[positionY][positionX].NextNode->object = map[positionY - 1][positionX].NextNode->object;
+				map[positionY - 1][positionX].NextNode->object = NULL;
 			}
 		}
 

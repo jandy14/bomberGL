@@ -18,14 +18,13 @@ void Dospecial(int, int, int);
 void Dokeyboard(unsigned char, int, int);
 void Update(int);
 GLubyte *LoadBmp(const char *path);
+extern mapStruct map[15][20];
 //===================================================================변수선언
 player **p;
 enemy **e;
 block **b;
 int enemymax;
 int blockmax;
-extern short type[15][20];
-extern void * object[15][20];
 //===================================================================메인
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdParam, int nCmdShow)
 {
@@ -63,6 +62,10 @@ void glutInit()
 				enemycount++;
 		}
 	}
+	/* 맵 배열 초기화 */
+	for (int i = 0; i < 15; i++)
+		for (int j = 0; j < 20; j++)
+			map[i][j].NextNode = NULL;
 //===============================================count된만큼 데이터할당
 	p = (player **)malloc(sizeof(player *));	//어차피 하나긴 한데 통일했다;
 	e = (enemy **)malloc(sizeof(enemy *)*enemycount);
@@ -82,26 +85,34 @@ void glutInit()
 			if (a == 12)
 			{
 				b[--blockcount] = new block(j, i, LoadBmp("Image/Block/Brick2.bmp"));//맵상xy좌표
-				type[i][j] = 12;
-				object[i][j] = b[blockcount];
+				AddNode(&(map[i][j].NextNode), CreateNode(12, b[blockcount]));
+				//type[i][j] = 12;
+				//object[i][j] = b[blockcount];
 			}
 			else if (a == 11)
 			{
 				b[--blockcount] = new block(j, i, LoadBmp("Image/Block/Brick1.bmp"));//맵상xy좌표
-				type[i][j] = 11;
-				object[i][j] = b[blockcount];
+				AddNode(&(map[i][j].NextNode), CreateNode(11, b[blockcount]));
+				//type[i][j] = 11;
+				//object[i][j] = b[blockcount];
 			}
 			else if (a == 2)
 			{
 				e[--enemycount] = new enemy(j, i);//맵상xy좌표
-				type[i][j] = 2;
-				object[i][j] = e[enemycount];
+				AddNode(&(map[i][j].NextNode), CreateNode(2, e[enemycount]));
+				//type[i][j] = 2;
+				//object[i][j] = e[enemycount];
 			}
 			else if (a == 1)
 			{
 				p[0] = new player(j, i);//맵상xy좌표
-				type[i][j] = 1;
-				object[i][j] = p[0];
+				AddNode(&(map[i][j].NextNode), CreateNode(1, p[0]));
+				//type[i][j] = 1;
+				//object[i][j] = p[0];
+			}
+			else if (a == 0)
+			{
+				AddNode(&(map[i][j].NextNode), CreateNode(0, NULL));
 			}
 		}
 	}

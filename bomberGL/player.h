@@ -29,9 +29,7 @@ public:
 	~player();
 };
 
-
-extern short type[15][20];
-extern void *object[15][20];
+extern mapStruct map[15][20];
 
 #endif
 /*

@@ -1,7 +1,9 @@
 #include "GameManager.h"
 
-short type[15][20];
-void *object[15][20];
+//short type[15][20];
+//void *object[15][20];
+mapStruct map[15][20];
+
 
 float ConversionX(float x)
 {
@@ -65,4 +67,66 @@ void DrawFunc(GLubyte * image, int dx, int dy)
 
 		x++;
 	}
+}
+
+///* 리스트 관련 함수 *///
+
+/* 노드 생성 */
+Node* CreateNode(int type, void *object)
+{
+	Node *newNode = new Node;
+
+	newNode->type = type;
+	newNode->object = object;
+	newNode->NextNode = NULL;
+
+	return newNode;
+}
+
+/* 노드 추가 */
+void AddNode(Node** Head, Node* NewNode)
+{
+	if ((*Head) == NULL)
+		*Head = NewNode;
+
+	else
+	{
+		Node* Tail = (*Head);
+		while (Tail->NextNode != NULL)
+			Tail = Tail->NextNode;
+
+		Tail->NextNode = NewNode;
+	}
+}
+
+/* 노드 삭제 */
+void PopNode(Node** Head, int index)
+{
+	Node* Prev = (*Head);
+	int i = 1;
+
+	while (i != index - 1)
+	{
+		Prev = Prev->NextNode;
+		i++;
+	}
+
+	Node* CurrentNode = Prev->NextNode;
+
+	if (CurrentNode->NextNode != NULL)
+	{
+		Prev->NextNode = CurrentNode->NextNode;
+		CurrentNode->NextNode = NULL;
+	}
+
+	else Prev->NextNode = NULL;
+
+	RemoveNode(CurrentNode);
+	return;
+}
+
+/* 노드 소멸 */
+void RemoveNode(Node* Node)
+{
+	free(Node);
 }
