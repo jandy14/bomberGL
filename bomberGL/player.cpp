@@ -7,6 +7,7 @@ player::player(int x, int y)
 	drawPositionX = x * 60;
 	drawPositionY = (y * 60) + 60;
 	temporaryValueX = temporaryValueY = 0;
+	way = 0;
 	maxbomb = 1;
 	nowbomb = 1;
 	power = 1;
@@ -47,6 +48,7 @@ void player::Move(int key)
 		switch (key)
 		{
 		case GLUT_KEY_RIGHT:
+			way = 0;
 			if (type[positionY][positionX + 1] <= 10)
 			{
 				right = true;
@@ -56,6 +58,7 @@ void player::Move(int key)
 			left = up = down = false;
 			break;
 		case GLUT_KEY_LEFT:
+			way = 1;
 			if (type[positionY][positionX - 1] <= 10)
 			{
 				left = true;
@@ -65,6 +68,7 @@ void player::Move(int key)
 			right = up = down = false;
 			break;
 		case GLUT_KEY_UP:
+			way = 2;
 			if (type[positionY - 1][positionX] <= 10)
 			{
 				up = true;
@@ -74,6 +78,7 @@ void player::Move(int key)
 			left = right = down = false;
 			break;
 		case GLUT_KEY_DOWN:
+			way = 3;
 			if (type[positionY + 1][positionX] <= 10)
 			{
 				down = true;
@@ -147,21 +152,12 @@ void player :: Draw()
 {
 	if (moving)
 	{
-		int i;
-		if (right) i = 0;
-		else if (left)i = 1;
-		else if (up)i = 2;
-		else if (down)i = 3;
-
-		if (speedCount * 5 / 4 > speedCountMax) DrawFunc(image[i][4], drawPositionX, drawPositionY);
-		else if (speedCount * 5 / 3 > speedCountMax) DrawFunc(image[i][3], drawPositionX, drawPositionY);
-		else if (speedCount * 5 / 2 > speedCountMax) DrawFunc(image[i][2], drawPositionX, drawPositionY);
-		else if (speedCount * 5 > speedCountMax) DrawFunc(image[i][1], drawPositionX, drawPositionY);
-		else DrawFunc(image[i][0], drawPositionX, drawPositionY);
+		if (speedCount * 5 / 4 > speedCountMax) DrawFunc(image[way][4], drawPositionX, drawPositionY);
+		else if (speedCount * 5 / 3 > speedCountMax) DrawFunc(image[way][3], drawPositionX, drawPositionY);
+		else if (speedCount * 5 / 2 > speedCountMax) DrawFunc(image[way][2], drawPositionX, drawPositionY);
+		else if (speedCount * 5 > speedCountMax) DrawFunc(image[way][1], drawPositionX, drawPositionY);
+		else DrawFunc(image[way][0], drawPositionX, drawPositionY);
 
 	}
-	else
-	{
-		DrawFunc(image[0][0], drawPositionX, drawPositionY);
-	}
+	else DrawFunc(image[way][0], drawPositionX, drawPositionY);
 }

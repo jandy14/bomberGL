@@ -11,6 +11,7 @@ private:
 	int drawPositionX, drawPositionY;	//그림이 그려질 좌표
 	int speedCountMax, speedCount;
 	int temporaryValueX, temporaryValueY;	// Enemy 방향값
+	int way;			//가려는 방향값  0우 1좌 2상 3하
 	int maxbomb;		//최대가능 갯수
 	int nowbomb;		//현재 설치한 갯수
 	int power;			//폭탄의 화력
