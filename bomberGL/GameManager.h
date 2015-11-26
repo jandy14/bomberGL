@@ -1,6 +1,6 @@
 #pragma once
-#ifndef __MAPMANAGER_H__
-#define __MAPMANAGER_H__
+#ifndef __GAMEMANAGER_H__
+#define __GAMEMANAGER_H__
 
 #include <windows.h>
 #include <GL/glut.h>

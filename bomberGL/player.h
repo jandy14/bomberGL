@@ -1,7 +1,7 @@
 #pragma once
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
-#include"MapManager.h"
+#include"GameManager.h"
 
 class player
 {

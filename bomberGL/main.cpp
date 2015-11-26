@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fstream>
-#include "MapManager.h"
+#include "GameManager.h"
 #include "player.h"
 #include "enemy.h"
 #include "block.h"

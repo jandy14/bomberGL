@@ -1,4 +1,4 @@
-#include "MapManager.h"
+#include "GameManager.h"
 
 short type[15][20];
 void *object[15][20];

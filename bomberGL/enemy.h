@@ -2,7 +2,7 @@
 #ifndef __ENEMY_H__
 #define __ENEMY_H__
 
-#include "MapManager.h"
+#include "GameManager.h"
 #include <random>
 
 class enemy 
