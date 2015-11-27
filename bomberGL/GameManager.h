@@ -27,8 +27,9 @@ GLubyte *LoadBmp(const char *path);
 void DrawFunc(GLubyte * image, int dx, int dy);
 Node* CreateNode(int type, void *object);
 void RemoveNode(Node* node);
-void AddNode(Node** head, Node* newNode);
-void PopNode(Node** head, int index);
+void AddNode(Node** Head, Node* newNode);
+void PopNode(Node** Head, void* object);
+Node* SearchNode(Node* Head, void* object);
 
 
 #endif

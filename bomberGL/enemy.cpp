@@ -43,7 +43,7 @@ bool enemy::Check()
 		if (positionX + 1 < 20)
 		{
 			//if (type[positionY][positionX + 1] == 0)
-			if (map[positionY][positionX + 1].nextNode->type == 0)
+			if (map[positionY][positionX + 1].nextNode->type <= 10)
 			{
 				temporaryValueX = 1;
 				return true;
@@ -56,7 +56,7 @@ bool enemy::Check()
 		if (positionX - 1 >= 0)
 		{
 			//if (type[positionY][positionX - 1] == 0)
-			if (map[positionY][positionX - 1].nextNode->type == 0)
+			if (map[positionY][positionX - 1].nextNode->type <= 10)
 			{
 				temporaryValueX = -1;
 				return true;
@@ -69,7 +69,7 @@ bool enemy::Check()
 		if (positionY - 1 >= 0)
 		{
 			//if (type[positionY - 1][positionX] == 0)
-			if (map[positionY - 1][positionX].nextNode->type == 0)
+			if (map[positionY - 1][positionX].nextNode->type <= 10)
 			{
 				temporaryValueY = -1;
 				return true;
@@ -82,7 +82,7 @@ bool enemy::Check()
 		if (positionY + 1 < 15)
 		{
 			//if (type[positionY + 1][positionX] == 0)
-			if (map[positionY + 1][positionX].nextNode->type == 0)
+			if (map[positionY + 1][positionX].nextNode->type <= 10)
 			{
 				temporaryValueY = 1;
 				return true;
@@ -152,52 +152,35 @@ void enemy::Moving()
 		/* 타일의 절반이상 넘어갔는지 체크 */
 		if (speedCountMax / 2 == speedCount)
 		{
+			Node* tmp;
 			if (right)
 			{
-				//type[positionY][positionX++] = 0;
-				//type[positionY][positionX] = 2;
-				//object[positionY][positionX] = object[positionY][positionX - 1];
-				//object[positionY][positionX - 1] = NULL;
-				map[positionY][positionX++].nextNode->type = 0;
-				map[positionY][positionX].nextNode->type = 2;
-				map[positionY][positionX].nextNode->object = map[positionY][positionX - 1].nextNode->object;
-				map[positionY][positionX - 1].nextNode->object = NULL;
+
+				AddNode(&(map[positionY][positionX++].nextNode), CreateNode(2, this));
+				//tmp = SearchNode(map[positionY][positionX - 1].nextNode, this);
+				PopNode(&(map[positionY][positionX - 1].nextNode), this);
+
 			}
 
 			else if (left)
 			{
-				//type[positionY][positionX--] = 0;
-				//type[positionY][positionX] = 2;
-				//object[positionY][positionX] = object[positionY][positionX + 1];
-				//object[positionY][positionX + 1] = NULL;
-				map[positionY][positionX--].nextNode->type = 0;
-				map[positionY][positionX].nextNode->type = 2;
-				map[positionY][positionX].nextNode->object = map[positionY][positionX + 1].nextNode->object;
-				map[positionY][positionX + 1].nextNode->object = NULL;
+				AddNode(&(map[positionY][positionX--].nextNode), CreateNode(2, this));
+				//tmp = SearchNode(map[positionY][positionX + 1].nextNode, this);
+				PopNode(&(map[positionY][positionX + 1].nextNode), this);
 			}
 
 			else if (up)
 			{
-				//type[positionY--][positionX] = 0;
-				//type[positionY][positionX] = 2;
-				//object[positionY][positionX] = object[positionY + 1][positionX];
-				//object[positionY + 1][positionX] = NULL;
-				map[positionY--][positionX].nextNode->type = 0;
-				map[positionY][positionX].nextNode->type = 2;
-				map[positionY][positionX].nextNode->object = map[positionY + 1][positionX].nextNode->object;
-				map[positionY + 1][positionX].nextNode->object = NULL;
+				AddNode(&(map[positionY--][positionX].nextNode), CreateNode(2, this));
+				//tmp = SearchNode(map[positionY + 1][positionX].nextNode, this);
+				PopNode(&(map[positionY + 1][positionX].nextNode), this);
 			}
 
 			else if (down)
 			{
-				//type[positionY++][positionX] = 0;
-				//type[positionY][positionX] = 2;
-				//object[positionY][positionX] = object[positionY - 1][positionX];
-				//object[positionY - 1][positionX] = NULL;
-				map[positionY++][positionX].nextNode->type = 0;
-				map[positionY][positionX].nextNode->type = 2;
-				map[positionY][positionX].nextNode->object = map[positionY - 1][positionX].nextNode->object;
-				map[positionY - 1][positionX].nextNode->object = NULL;
+				AddNode(&(map[positionY++][positionX].nextNode), CreateNode(2, this));
+				//tmp = SearchNode(map[positionY - 1][positionX].nextNode, this);
+				PopNode(&(map[positionY - 1][positionX].nextNode), this);
 			}
 		}
 
@@ -214,4 +197,5 @@ void enemy::Moving()
 	}
 
 	return;
+
 }

@@ -84,46 +84,82 @@ Node* CreateNode(int type, void *object)
 }
 
 /* 노드 추가 */
-void AddNode(Node** head, Node* newNode)
+void AddNode(Node** Head, Node* newNode)
 {
-	if ((*head) == NULL)
-		*head = newNode;
+	if ((*Head) == NULL)
+		*Head = newNode;
 
 	else
 	{
-		Node* tail = (*head);
+		Node* tail = (*Head);
+
+		if (tail->type == 0)
+		{
+			tail->type = newNode->type;
+			tail->object = newNode->object;
+			tail->nextNode = NULL;
+
+			return;
+		}
+
 		while (tail->nextNode != NULL)
 			tail = tail->nextNode;
 
 		tail->nextNode = newNode;
+
+		return;
 	}
 }
 
 /* 노드 삭제 */
-void PopNode(Node** head, int index)
+void PopNode(Node** Head, void* object)
 {
-	Node* prev = (*head);
-	int i = 1;
+	Node* prev = (*Head);
+	int i = 0;
 
-	while (i != index - 1)
+	while (prev->nextNode != NULL)
 	{
-		prev = prev->nextNode;
 		i++;
+		if (prev->object == object) break;
+		prev = prev->nextNode;
 	}
 
 	Node* currentNode = prev->nextNode;
 
-	if (currentNode->nextNode != NULL)
+	/* 현재 노드가 끝이 아닐경우 */
+	if (prev->nextNode != NULL && currentNode->nextNode != NULL)
 	{
-		prev->nextNode = currentNode->nextNode;
-		currentNode->nextNode = NULL;
+		prev->nextNode = currentNode->nextNode;	
+		prev->nextNode->nextNode = NULL;
 	}
 
+	/* 노드가 한개뿐일 경우*/
+	else if (i == 0 && prev->nextNode == NULL)
+	{
+		prev->type = 0;
+		prev->object = NULL;
+
+		return;	
+	}
+	/* 현재 노드가 끝에 있을 경우 */
 	else prev->nextNode = NULL;
 
 	RemoveNode(currentNode);
 	return;
 }
+
+/* 노드 탐색 */
+Node* SearchNode(Node* head, void* object)
+{
+	Node* current = head;
+
+	while (current != NULL)
+	{
+		if (current->object == object) return current;
+		current = current->nextNode;
+	}
+}
+
 
 /* 노드 소멸 */
 void RemoveNode(Node* node)
