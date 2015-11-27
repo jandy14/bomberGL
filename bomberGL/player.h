@@ -29,7 +29,7 @@ public:
 	~player();
 };
 
-extern mapStruct map[15][20];
+extern MapStruct map[15][20];
 
 #endif
 /*

@@ -13,22 +13,22 @@ typedef struct node
 {
 	int type;
 	void *object;
-	struct node* NextNode;
+	struct node* nextNode;
 } Node;
 
 typedef struct Map
 {
-	struct node* NextNode;
-} mapStruct;
+	struct node* nextNode;
+} MapStruct;
 
 float ConversionX(float x);
 float ConversionY(float y);
 GLubyte *LoadBmp(const char *path);
 void DrawFunc(GLubyte * image, int dx, int dy);
 Node* CreateNode(int type, void *object);
-void RemoveNode(Node* Node);
-void AddNode(Node** Head, Node* NewNode);
-void PopNode(Node** Head, int index);
+void RemoveNode(Node* node);
+void AddNode(Node** head, Node* newNode);
+void PopNode(Node** head, int index);
 
 
 #endif

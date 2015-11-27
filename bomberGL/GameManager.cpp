@@ -2,7 +2,7 @@
 
 //short type[15][20];
 //void *object[15][20];
-mapStruct map[15][20];
+MapStruct map[15][20];
 
 
 float ConversionX(float x)
@@ -18,19 +18,19 @@ float ConversionY(float y)
 GLubyte *LoadBmp(const char *path)
 {
 	HANDLE hFile;
-	DWORD FileSize, dwRead;
+	DWORD fileSize, dwRead;
 	BITMAPFILEHEADER *fh = NULL;
 	BYTE *pRaster;
 
 	hFile = CreateFileA(path, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (hFile == INVALID_HANDLE_VALUE) return NULL;
-	FileSize = GetFileSize(hFile, NULL);
-	fh = new BITMAPFILEHEADER[FileSize];
-	ReadFile(hFile, fh, FileSize, &dwRead, NULL);
+	fileSize = GetFileSize(hFile, NULL);
+	fh = new BITMAPFILEHEADER[fileSize];
+	ReadFile(hFile, fh, fileSize, &dwRead, NULL);
 	CloseHandle(hFile);
 
-	int len = FileSize - fh->bfOffBits;
+	int len = fileSize - fh->bfOffBits;
 	pRaster = new GLubyte[len];
 	memcpy(pRaster, (BYTE *)fh + fh->bfOffBits, len);
 
@@ -78,55 +78,55 @@ Node* CreateNode(int type, void *object)
 
 	newNode->type = type;
 	newNode->object = object;
-	newNode->NextNode = NULL;
+	newNode->nextNode = NULL;
 
 	return newNode;
 }
 
 /* 노드 추가 */
-void AddNode(Node** Head, Node* NewNode)
+void AddNode(Node** head, Node* newNode)
 {
-	if ((*Head) == NULL)
-		*Head = NewNode;
+	if ((*head) == NULL)
+		*head = newNode;
 
 	else
 	{
-		Node* Tail = (*Head);
-		while (Tail->NextNode != NULL)
-			Tail = Tail->NextNode;
+		Node* tail = (*head);
+		while (tail->nextNode != NULL)
+			tail = tail->nextNode;
 
-		Tail->NextNode = NewNode;
+		tail->nextNode = newNode;
 	}
 }
 
 /* 노드 삭제 */
-void PopNode(Node** Head, int index)
+void PopNode(Node** head, int index)
 {
-	Node* Prev = (*Head);
+	Node* prev = (*head);
 	int i = 1;
 
 	while (i != index - 1)
 	{
-		Prev = Prev->NextNode;
+		prev = prev->nextNode;
 		i++;
 	}
 
-	Node* CurrentNode = Prev->NextNode;
+	Node* currentNode = prev->nextNode;
 
-	if (CurrentNode->NextNode != NULL)
+	if (currentNode->nextNode != NULL)
 	{
-		Prev->NextNode = CurrentNode->NextNode;
-		CurrentNode->NextNode = NULL;
+		prev->nextNode = currentNode->nextNode;
+		currentNode->nextNode = NULL;
 	}
 
-	else Prev->NextNode = NULL;
+	else prev->nextNode = NULL;
 
-	RemoveNode(CurrentNode);
+	RemoveNode(currentNode);
 	return;
 }
 
 /* 노드 소멸 */
-void RemoveNode(Node* Node)
+void RemoveNode(Node* node)
 {
-	free(Node);
+	free(node);
 }
