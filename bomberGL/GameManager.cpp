@@ -130,7 +130,7 @@ void PopNode(Node** Head, void* object)
 	if (prev->nextNode != NULL && currentNode->nextNode != NULL)
 	{
 		prev->nextNode = currentNode->nextNode;	
-		prev->nextNode->nextNode = NULL;
+		currentNode->nextNode = NULL;
 	}
 
 	/* 노드가 한개뿐일 경우*/

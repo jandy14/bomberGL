@@ -23,13 +23,13 @@ typedef struct Map
 
 float ConversionX(float x);
 float ConversionY(float y);
-GLubyte *LoadBmp(const char *path);
-void DrawFunc(GLubyte * image, int dx, int dy);
-Node* CreateNode(int type, void *object);
-void RemoveNode(Node* node);
-void AddNode(Node** Head, Node* newNode);
-void PopNode(Node** Head, void* object);
-Node* SearchNode(Node* Head, void* object);
+GLubyte *LoadBmp(const char *path);				//비트맵이미지정보를 읽어줌
+void DrawFunc(GLubyte * image, int dx, int dy);	//비트맵이미지 그려줌
+Node* CreateNode(int type, void *object);		//node구조체 생성그리고 node주소 리턴
+void RemoveNode(Node* node);					//node주소 해제
+void AddNode(Node** Head, Node* newNode);		//노드추가
+void PopNode(Node** Head, void* object);		//object값이 들어있는 노드삭제
+Node* SearchNode(Node* Head, void* object);		//object값이 들어있는 노드의 주소값리턴
 
 
 #endif
