@@ -18,22 +18,13 @@ enemy::enemy(int positionX, int positionY, GLubyte *image[4][2], GLubyte *die[3]
 	this->positionY = positionY;
 
 	/* Enemy 이미지 로드 */
-	this->image[0][0] = LoadBmp("Image/Enemy/Right_1.bmp");
-	this->image[0][1] = LoadBmp("Image/Enemy/Right_2.bmp");
+	for (int i = 0; i < 4; i++)
+	{
+		this->image[i][0] = image[i][0];
+		this->image[i][1] = image[i][1];
+	}
 
-	this->image[1][0] = LoadBmp("Image/Enemy/Up_1.bmp");
-	this->image[1][1] = LoadBmp("Image/Enemy/Up_2.bmp");
-
-	this->image[2][0] = LoadBmp("Image/Enemy/Left_1.bmp");
-	this->image[2][1] = LoadBmp("Image/Enemy/Left_2.bmp");
-
-	this->image[3][0] = LoadBmp("Image/Enemy/Down_1.bmp");
-	this->image[3][1] = LoadBmp("Image/Enemy/Down_2.bmp");
-
-	/* Die 이미지 로드 */
-	this->die[0] = LoadBmp("Image/Enemy/Die_1.bmp");
-	this->die[1] = LoadBmp("Image/Enemy/Die_2.bmp");
-	this->die[2] = LoadBmp("Image/Enemy/Die_3.bmp");
+	for (int i = 0; i < 3; i++) this->die[i] = die[i];
 }
 
 enemy::~enemy()
@@ -124,6 +115,9 @@ void enemy::Move()
 			case DOWN:
 				down = true;
 				break;
+			case 7:
+				isDying = true;
+				return;
 			default:
 				return;
 			}
@@ -138,12 +132,13 @@ void enemy::Move()
 
 void enemy::Draw()
 {
-	DrawFunc(image[way - 1][(speedCount / 2) % 2], drawPositionX, drawPositionY);
+	if (isDying) DrawFunc(die[speedCount % 3], drawPositionX, drawPositionY);
+	else DrawFunc(image[way - 1][(speedCount / 2) % 2], drawPositionX, drawPositionY);
 }
 
 void enemy::Moving()
 {
-	if (moving)
+	if (moving && !isDying)
 	{
 		/* 상하좌우 움직임 명령 */
 		drawPositionX += (60 / speedCountMax) * temporaryValueX;
@@ -172,6 +167,12 @@ void enemy::Die()
 {
 	if (isDying)
 	{
-		DrawFunc(die[(speedCount / 2) % 2], drawPositionX, drawPositionY);
+		if (speedCount == 2)
+		{
+			PopNode(&(map[positionY][positionX].nextNode), this);
+			free(this);
+		}
+
+		speedCount++;
 	}
 }

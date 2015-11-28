@@ -226,6 +226,7 @@ void Update(int value)
 					break;
 				case 2:
 					e = (enemy *)current->object;
+					e->Die();
 					e->Move();
 					e->Moving();
 
@@ -250,8 +251,6 @@ void Update(int value)
 				default:
 					break;
 				}
-
-
 
 				prev = current;
 				current = current->nextNode;
