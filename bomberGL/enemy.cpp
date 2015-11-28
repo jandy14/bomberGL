@@ -152,12 +152,10 @@ void enemy::Moving()
 		/* 타일의 절반이상 넘어갔는지 체크 */
 		if (speedCountMax / 2 == speedCount)
 		{
-			Node* tmp;
 			if (right)
 			{
 
 				AddNode(&(map[positionY][++positionX].nextNode), CreateNode(2, this));
-				//tmp = SearchNode(map[positionY][positionX - 1].nextNode, this);
 				PopNode(&(map[positionY][positionX - 1].nextNode), this);
 
 			}
@@ -165,21 +163,18 @@ void enemy::Moving()
 			else if (left)
 			{
 				AddNode(&(map[positionY][--positionX].nextNode), CreateNode(2, this));
-				//tmp = SearchNode(map[positionY][positionX + 1].nextNode, this);
 				PopNode(&(map[positionY][positionX + 1].nextNode), this);
 			}
 
 			else if (up)
 			{
 				AddNode(&(map[--positionY][positionX].nextNode), CreateNode(2, this));
-				//tmp = SearchNode(map[positionY + 1][positionX].nextNode, this);
 				PopNode(&(map[positionY + 1][positionX].nextNode), this);
 			}
 
 			else if (down)
 			{
 				AddNode(&(map[++positionY][positionX].nextNode), CreateNode(2, this));
-				//tmp = SearchNode(map[positionY - 1][positionX].nextNode, this);
 				PopNode(&(map[positionY - 1][positionX].nextNode), this);
 			}
 		}

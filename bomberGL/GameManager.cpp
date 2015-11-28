@@ -114,35 +114,56 @@ void AddNode(Node** Head, Node* newNode)
 /* 노드 삭제 */
 void PopNode(Node** Head, void* object)
 {
-	Node* prev = (*Head);
+	Node* prevNode = (*Head);
+	Node* currentNode = (*Head)->nextNode;			// 지워야 할 노드
 	int i = 0;
 
-	while (prev->nextNode != NULL)
+	while (currentNode != NULL)
 	{
+		if (i == 0 && prevNode->object == object)
+		{
+			i--;
+			break;
+		}
+		if (currentNode->object == object) break;
+
+		prevNode = currentNode;
+		currentNode = currentNode->nextNode;
 		i++;
-		if (prev->object == object) break;
-		prev = prev->nextNode;
 	}
 
-	Node* currentNode = prev->nextNode;
-
-	/* 현재 노드가 끝이 아닐경우 */
-	if (prev->nextNode != NULL && currentNode->nextNode != NULL)
+	/* 노드가 여러개일 경우 */
+	if (currentNode != NULL)
 	{
-		prev->nextNode = currentNode->nextNode;	
-		currentNode->nextNode = NULL;
+		/* 제일 앞의 노드를 제거할 경우 */
+		if (i == -1)
+		{
+			(*Head) = currentNode;
+			prevNode->nextNode = NULL;
+			RemoveNode(prevNode);
+
+			return;
+		}
+		/* 현재 노드가 끝이 아닐경우 */
+		if (currentNode->nextNode != NULL)
+		{
+			prevNode->nextNode = currentNode->nextNode;
+			currentNode->nextNode = NULL;
+		}
+
+		/* 현재 노드가 끝일경우 */
+		else prevNode->nextNode = NULL;
 	}
 
 	/* 노드가 한개뿐일 경우*/
-	else if (i == 0 && prev->nextNode == NULL)
+	else if (i == 0 && currentNode == NULL)
 	{
-		prev->type = 0;
-		prev->object = NULL;
+		prevNode->type = 0;
+		prevNode->object = NULL;
+		prevNode->nextNode = NULL;
 
 		return;	
 	}
-	/* 현재 노드가 끝에 있을 경우 */
-	else prev->nextNode = NULL;
 
 	RemoveNode(currentNode);
 	return;
