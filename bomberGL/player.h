@@ -6,7 +6,7 @@
 class player
 {
 private:
-	GLubyte *image[4][5];
+	GLubyte *image[4][5];			//객체의 이미지
 	int positionX, positionY;		//맵상에서의 좌표
 	int drawPositionX, drawPositionY;	//그림이 그려질 좌표
 	int speedCountMax, speedCount;

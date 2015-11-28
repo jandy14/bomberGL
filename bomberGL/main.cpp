@@ -1,15 +1,6 @@
 //===================================================================전처리
 #pragma warning(disable:4996)
-#include <windows.h>
-#include <gl/glut.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <fstream>
 #include "GameManager.h"
-#include "player.h"
-#include "enemy.h"
-#include "block.h"
-//#include "bomb.h"
 //===================================================================함수선언
 void glutInit();
 void Resize(int, int);
@@ -23,6 +14,9 @@ extern MapStruct map[15][20];
 player **p;
 enemy **e;
 block **b;
+bomb *bom[10];
+
+
 int enemymax;
 int blockmax;
 //===================================================================메인
@@ -117,6 +111,8 @@ void glutInit()
 		}
 	}
 	f.close();
+//===================================================================이미지로드(위에서 못한것들)
+
 }
 void Resize(int width, int height)
 {
@@ -129,10 +125,21 @@ void Dodisplay()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	p[0]->Draw();
-	for (int i = 0; i < enemymax && e[i] != NULL; i++)
-		e[i]->Draw();
-	for (int i = 0; i < blockmax && b[i] != NULL; i++)
-		b[i]->Draw();
+	for (int i = 0; i < enemymax; i++)
+	{
+		if (e[i] != NULL)
+			e[i]->Draw();
+	}
+	for (int i = 0; i < blockmax; i++)
+	{
+		if (b[i] != NULL)
+			b[i]->Draw();
+	}
+	for (int i = 0; i < 10; i++)
+	{
+		if (b[i] != NULL)
+			b[i]->Draw();
+	}
 	glutSwapBuffers();
 }
 void Dospecial(int key, int x, int y)
@@ -151,13 +158,22 @@ void Update(int value)
 	glutTimerFunc(30, Update, 1);
 //각 객체마다 갱신해줘야 하는 내용이 들어간다.
 //s_map구조체안을 다 둘러보면서 갱신해줄지도 모르겠다.
-	for (int i = 0; i < enemymax && e[i] != NULL; i++)
-		e[i]->Move();
+	for (int i = 0; i < enemymax; i++)
+	{
+		if(e[i]!=NULL)
+			e[i]->Move();
+	}
 	p[0]->Moving();
-	for (int i = 0; i < enemymax && e[i] != NULL; i++)
-		e[i]->Moving();
-	for (int i = 0; i < blockmax && b[i] != NULL; i++)
-		b[i]->Moving();
+	for (int i = 0; i < enemymax; i++)
+	{
+		if (e[i] != NULL)
+			e[i]->Moving();
+	}
+	for (int i = 0; i < blockmax; i++)
+	{
+		if (b[i] != NULL)
+			b[i]->Moving();
+	}
 
 	glutPostRedisplay();
 }

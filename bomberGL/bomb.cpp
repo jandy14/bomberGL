@@ -4,6 +4,7 @@
 
 bomb::bomb(int x, int y)
 {
+
 }
 
 
