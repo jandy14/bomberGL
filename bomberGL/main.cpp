@@ -18,7 +18,8 @@ extern MapStruct map[15][20];
 player *p;
 enemy *e;
 block *b;
-GLubyte *playerImage[4][5], *enemyImage[4][2], *blockImage[2], *playerDie[3], *enemyDie[3];
+bomb *bom;
+GLubyte *playerImage[4][5], *enemyImage[4][2], *blockImage[2], *bombImage, *playerDie[3], *enemyDie[3], *bombexplosionimage[7];
 Node* current;
 Node* prev = NULL;
 //===================================================================메인
@@ -97,6 +98,15 @@ void glutInit()
 	blockImage[0] = LoadBmp("Image/Block/Brick1.bmp");
 	blockImage[1] = LoadBmp("Image/Block/Brick2.bmp");
 
+	/* Bomb 이미지 로드*/
+	bombImage = LoadBmp("Image/Bomb/Bomb.bmp");
+	bombexplosionimage[0] = LoadBmp("Image/Bomb/Explosion0.bmp");
+	bombexplosionimage[1] = LoadBmp("Image/Bomb/Explosion1.bmp");
+	bombexplosionimage[2] = LoadBmp("Image/Bomb/Explosion2.bmp");
+	bombexplosionimage[3] = LoadBmp("Image/Bomb/Explosion3.bmp");
+	bombexplosionimage[4] = LoadBmp("Image/Bomb/Explosion4.bmp");
+	bombexplosionimage[5] = LoadBmp("Image/Bomb/Explosion5.bmp");
+	bombexplosionimage[6] = LoadBmp("Image/Bomb/Explosion6.bmp");
 	/* 객체 생성 및 배치 */
 	f.open("Info/mapinfo.txt");
 
@@ -165,6 +175,10 @@ void Dodisplay()
 					b = (block *)current->object;
 					b->Draw();
 					break;
+				case 21:
+					bom = (bomb *)current->object;
+					bom->Draw();
+					break;
 				default:
 					break;
 				}
@@ -183,9 +197,8 @@ void Dospecial(int key, int x, int y)
 }
 void Dokeyboard(unsigned char value, int x, int y)
 {
-//	p[0]->Putbomb();
-//Dospecial()과 다를건 없다 여기선 스페이스바입력을 받아 폭탄만 설치하면 된다.
-//즉 player.Putbomb()만 써주면 된다.
+	if(value==32)
+		p->Putbomb(bombImage,bombexplosionimage);
 }
 void Update(int value)
 {
@@ -223,6 +236,16 @@ void Update(int value)
 					}
 					break;
 				case 11: case 12:
+					break;
+				case 21:
+					bom = (bomb *)current->object;
+					bom->Countdown();
+					bom->Explosion();
+					if (current->object != bom)
+					{
+						current = prev->nextNode;
+						continue;
+					}
 					break;
 				default:
 					break;

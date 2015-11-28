@@ -26,7 +26,7 @@ public:
 	void Move(int key);		//입력값을 받아서 움직임을 Moving()에 명령
 	void Draw();		//객체의 이미지를 그려줌
 	void Moving();		//move()에서 받은 명령을 시행(pixelx,y 설정)
-	void Putbomb();		//폭탄 설치(폭탄 클래스의 인스턴스 생성)
+	void Putbomb(GLubyte * image,GLubyte **explosionimage);		//폭탄 설치(폭탄 클래스의 인스턴스 생성)
 	void Getbomb();		//폭탄이 터지면 nowbomb의 값을 재조정해준다
 	~player();
 };

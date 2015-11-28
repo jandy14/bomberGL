@@ -108,8 +108,8 @@ void player :: Draw()
 	else DrawFunc(image[way][0], drawPositionX, drawPositionY);
 }
 
-void player::Putbomb()
+void player::Putbomb(GLubyte * image, GLubyte **explosionimage)
 {
-	bomb *bom = new bomb(positionX, positionY);
+	bomb *bom = new bomb(positionX, positionY,image, explosionimage);
 	AddNode(&(map[positionY][positionX].nextNode), CreateNode(21, bom));
 }
