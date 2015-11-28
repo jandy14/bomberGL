@@ -10,6 +10,7 @@ class enemy
 private:
 	GLubyte *image[4][2], *die[3];												// 이미지 저장 변수
 	int speedCountMax, speedCount;												// Enemy 속도
+	int dyingCount;																// dying 카운트
 	int positionX, positionY;													// Enemy 배열 좌표값
 	int drawPositionX, drawPositionY;											// Draw 시작 좌표값
 	int temporaryValueX, temporaryValueY;										// Enemy 방향 계산값

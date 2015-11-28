@@ -7,6 +7,8 @@ enemy::enemy(int positionX, int positionY, GLubyte *image[4][2], GLubyte *die[3]
 	speedCount = 0;
 	speedCountMax = 12;
 
+	dyingCount = 0;
+
 	drawPositionX = 60 * positionX;
 	drawPositionY = 60 * (positionY + 1);
 
@@ -132,7 +134,7 @@ void enemy::Move()
 
 void enemy::Draw()
 {
-	if (isDying) DrawFunc(die[speedCount % 3], drawPositionX, drawPositionY);
+	if (isDying) DrawFunc(die[dyingCount % 3], drawPositionX, drawPositionY);
 	else DrawFunc(image[way - 1][(speedCount / 2) % 2], drawPositionX, drawPositionY);
 }
 
@@ -167,12 +169,12 @@ void enemy::Die()
 {
 	if (isDying)
 	{
-		if (speedCount == 2)
+		if (dyingCount == 2)
 		{
 			PopNode(&(map[positionY][positionX].nextNode), this);
-			free(this);
+			delete this;
 		}
 
-		speedCount++;
+		dyingCount++;
 	}
 }

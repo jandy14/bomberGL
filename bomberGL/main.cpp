@@ -13,15 +13,16 @@ void Dospecial(int, int, int);
 void Dokeyboard(unsigned char, int, int);
 void Update(int);
 GLubyte *LoadBmp(const char *path);
-extern MapStruct map[15][20];
 //===================================================================변수선언
 player *p;
 enemy *e;
 block *b;
 bomb *bom;
-GLubyte *playerImage[4][5], *enemyImage[4][2], *blockImage[2], *bombImage, *playerDie[3], *enemyDie[3], *bombexplosionimage[7];
+GLubyte *playerImage[4][5], *enemyImage[4][2], *blockImage[2], *bombImage, *bombexplosionimage[7];
+GLubyte *playerDie[3], *enemyDie[3];
 Node* current;
 Node* prev = NULL;
+extern MapStruct map[15][20];
 //===================================================================메인
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdParam, int nCmdShow)
 {
@@ -107,6 +108,7 @@ void glutInit()
 	bombexplosionimage[4] = LoadBmp("Image/Bomb/Explosion4.bmp");
 	bombexplosionimage[5] = LoadBmp("Image/Bomb/Explosion5.bmp");
 	bombexplosionimage[6] = LoadBmp("Image/Bomb/Explosion6.bmp");
+
 	/* 객체 생성 및 배치 */
 	f.open("Info/mapinfo.txt");
 
@@ -140,8 +142,6 @@ void glutInit()
 	}
 
 	f.close();
-//===================================================================이미지로드(위에서 못한것들)
-
 }
 void Resize(int width, int height)
 {
@@ -150,6 +150,7 @@ void Resize(int width, int height)
 
 	glutReshapeWindow(WIDTH, HEIGHT);
 }
+
 void Dodisplay()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -190,16 +191,19 @@ void Dodisplay()
 	}
 	glutSwapBuffers();
 }
+
 void Dospecial(int key, int x, int y)
 {
 	p->Move(key);
 //	player.move();식으로 key값으로 방향만 받아준다
 }
+
 void Dokeyboard(unsigned char value, int x, int y)
 {
-	if(value==32)
-		p->Putbomb(bombImage,bombexplosionimage);
+	if (value == 32)
+		p->Putbomb(bombImage, bombexplosionimage);
 }
+
 void Update(int value)
 {
 	glutTimerFunc(30, Update, 1);
