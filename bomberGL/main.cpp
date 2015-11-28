@@ -23,8 +23,9 @@ extern MapStruct map[15][20];
 player *p;
 enemy *e;
 block *b;
-GLubyte *playerImage[4][5], *enemyImage[4][2], *blockImage[2], *enemyDie[3], *playerDie[3];
+GLubyte *playerImage[4][5], *enemyImage[4][2], *blockImage[2], *playerDie[3], *enemyDie[3];
 Node* current;
+Node* prev = NULL;
 int enemymax;
 int blockmax;
 //===================================================================메인
@@ -46,7 +47,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 //===================================================================함수정의
 void glutInit()
 {
-	int a;
+	int objectType;
 	int blockcount = 0;
 	int enemycount = 0;
 	std::ifstream f;
@@ -103,37 +104,38 @@ void glutInit()
 	blockImage[0] = LoadBmp("Image/Block/Brick1.bmp");
 	blockImage[1] = LoadBmp("Image/Block/Brick2.bmp");
 
-//===============================================객체생성및배치
+	/* 객체 생성 및 배치 */
 	f.open("Info/mapinfo.txt");
 
 	for (int i = 0; i < 15; i++)
 	{
 		for (int j = 0; j < 20; j++)
 		{
-			f >> a;
+			f >> objectType;
 
-			switch (a)
+			switch (objectType)
 			{
 			case 0:
-				AddNode(&(map[i][j].nextNode), CreateNode(0, NULL));
+				AddNode(&(map[i][j].nextNode), CreateNode(objectType, NULL));
 				break;
 			case 1:
 				p = new player(j, i, playerImage, playerDie);//맵상xy좌표
-				AddNode(&(map[i][j].nextNode), CreateNode(a, p));
+				AddNode(&(map[i][j].nextNode), CreateNode(objectType, p));
 				break;
 			case 2:
 				e = new enemy(j, i, enemyImage, enemyDie);
-				AddNode(&(map[i][j].nextNode), CreateNode(a, e));
+				AddNode(&(map[i][j].nextNode), CreateNode(objectType, e));
 				break;
 			case 11: case 12:
-				b = new block(j, i, blockImage[a % 11]);
-				AddNode(&(map[i][j].nextNode), CreateNode(a, b));
+				b = new block(j, i, blockImage[objectType % 11]);
+				AddNode(&(map[i][j].nextNode), CreateNode(objectType, b));
 				break;
 			default:
 				break;
 			}
 		}
 	}
+
 	f.close();
 }
 void Resize(int width, int height)
@@ -172,6 +174,9 @@ void Dodisplay()
 					break;
 				}
 
+				//if(current == NULL2)
+
+				prev = current;
 				current = current->nextNode;
 			}
 		}
@@ -208,11 +213,23 @@ void Update(int value)
 				case 1:
 					p = (player *)current->object;
 					p->Moving();
+
+					if (current->object != p)
+					{
+						current = prev->nextNode;
+						continue;
+					}
 					break;
 				case 2:
 					e = (enemy *)current->object;
 					e->Move();
 					e->Moving();
+
+					if (current->object != e)
+					{
+						current = prev->nextNode;
+						continue;
+					}
 					break;
 				case 11: case 12:
 					break;
@@ -220,6 +237,9 @@ void Update(int value)
 					break;
 				}
 
+				
+
+				prev = current;
 				current = current->nextNode;
 			}
 		}

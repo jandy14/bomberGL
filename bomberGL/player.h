@@ -20,7 +20,7 @@ private:
 	bool right, left, up, down;//현재 움직이는 상태
 	bool Check();		//move()에서 받은 입력값이 갈수 있는곳인지 확인(갈수 있으면 TRUE)??필요없나??ㅋ
 public:
-	player(int x, int y, GLubyte *im[4][5], GLubyte *d[3]);
+	player(int x, int y, GLubyte *image[4][5], GLubyte *die[3]);
 	void Move(int key);		//입력값을 받아서 움직임을 Moving()에 명령
 	void Draw();		//객체의 이미지를 그려줌
 	void Moving();		//move()에서 받은 명령을 시행(pixelx,y 설정)

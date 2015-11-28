@@ -138,7 +138,7 @@ void enemy::Move()
 
 void enemy::Draw()
 {
-	DrawFunc(image[way - 1][(speedCount / 4) % 2], drawPositionX, drawPositionY);
+	DrawFunc(image[way - 1][(speedCount / 2) % 2], drawPositionX, drawPositionY);
 }
 
 void enemy::Moving()

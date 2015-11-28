@@ -1,8 +1,8 @@
-#pragma once
-#ifndef __GAMEMANAGER_H__
-#define __GAMEMANAGER_H__
-
-#include <windows.h>
+#pragma once									// 해결 해야할 문제들
+#ifndef __GAMEMANAGER_H__						// Image 포인터값을 객체에 전달
+#define __GAMEMANAGER_H__						// 오른쪽, 아래로 갈때 순풍으로 인한 텔레포트
+												// 노드 Pop시 main.cpp의 current값이 0xdddddddd로 되는 현상
+#include <windows.h>							// PopNode AddNode등 노드 함수들에 인자값이 **Head 인거
 #include <GL/glut.h>
 
 
