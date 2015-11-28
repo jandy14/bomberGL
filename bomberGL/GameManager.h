@@ -3,8 +3,10 @@
 #define __GAMEMANAGER_H__						// 오른쪽, 아래로 갈때 순풍으로 인한 텔레포트
 												// 노드 Pop시 main.cpp의 current값이 0xdddddddd로 되는 현상
 #include <windows.h>							// PopNode AddNode등 노드 함수들에 인자값이 **Head 인거
-#include <GL/glut.h>
-
+#include <gl/glut.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fstream>
 
 #define SIZE 60
 #define WIDTH 1200
@@ -32,7 +34,7 @@ float ConversionX(float x);
 float ConversionY(float y);
 GLubyte *LoadBmp(const char *path);				//비트맵이미지정보를 읽어줌
 void DrawFunc(GLubyte * image, int dx, int dy);	//비트맵이미지 그려줌
-void FourWayMoving(int wayValue, void *object, int *x, int *y);				// 맵 배열상의 오브젝트 이동 처리 함수
+void FourWayMoving(int wayValue, void *object, int *x, int *y, int type);				// 맵 배열상의 오브젝트 이동 처리 함수
 Node* CreateNode(int type, void *object);		//node구조체 생성그리고 node주소 리턴
 void RemoveNode(Node* node);					//node주소 해제
 void AddNode(Node** Head, Node* newNode);		//노드추가

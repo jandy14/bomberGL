@@ -1,15 +1,10 @@
 //===================================================================전처리
 #pragma warning(disable:4996)
-#include <windows.h>
-#include <gl/glut.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <fstream>
 #include "GameManager.h"
 #include "player.h"
 #include "enemy.h"
 #include "block.h"
-//#include "bomb.h"
+#include "bomb.h"
 //===================================================================함수선언
 void glutInit();
 void Resize(int, int);
@@ -26,8 +21,6 @@ block *b;
 GLubyte *playerImage[4][5], *enemyImage[4][2], *blockImage[2], *playerDie[3], *enemyDie[3];
 Node* current;
 Node* prev = NULL;
-int enemymax;
-int blockmax;
 //===================================================================메인
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdParam, int nCmdShow)
 {
@@ -137,6 +130,8 @@ void glutInit()
 	}
 
 	f.close();
+//===================================================================이미지로드(위에서 못한것들)
+
 }
 void Resize(int width, int height)
 {
@@ -174,14 +169,11 @@ void Dodisplay()
 					break;
 				}
 
-				//if(current == NULL2)
-
 				prev = current;
 				current = current->nextNode;
 			}
 		}
 	}
-
 	glutSwapBuffers();
 }
 void Dospecial(int key, int x, int y)
@@ -198,9 +190,8 @@ void Dokeyboard(unsigned char value, int x, int y)
 void Update(int value)
 {
 	glutTimerFunc(30, Update, 1);
-//각 객체마다 갱신해줘야 하는 내용이 들어간다.
-//s_map구조체안을 다 둘러보면서 갱신해줄지도 모르겠다.
-	
+	//각 객체마다 갱신해줘야 하는 내용이 들어간다.
+	//s_map구조체안을 다 둘러보면서 갱신해줄지도 모르겠다.	
 	for (int i = 0; i < 15; i++)
 	{
 		for (int j = 0; j < 20; j++)
@@ -237,7 +228,7 @@ void Update(int value)
 					break;
 				}
 
-				
+
 
 				prev = current;
 				current = current->nextNode;

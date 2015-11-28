@@ -78,31 +78,7 @@ void player::Moving()
 
 		/* 타일의 절반이상 넘어갔는지 체크 */
 		if (speedCountMax / 2 == speedCount)
-		{
-			if (right)
-			{
-				AddNode(&(map[positionY][++positionX].nextNode), CreateNode(1, this));
-				PopNode(&(map[positionY][positionX - 1].nextNode), this);
-			}
-
-			else if (left)
-			{
-				AddNode(&(map[positionY][--positionX].nextNode), CreateNode(1, this));
-				PopNode(&(map[positionY][positionX + 1].nextNode), this);
-			}
-
-			else if (up)
-			{
-				AddNode(&(map[--positionY][positionX].nextNode), CreateNode(1, this));
-				PopNode(&(map[positionY + 1][positionX].nextNode), this);
-			}
-
-			else if (down)
-			{
-				AddNode(&(map[++positionY][positionX].nextNode), CreateNode(1, this));
-				PopNode(&(map[positionY - 1][positionX].nextNode), this);
-			}
-		}
+			FourWayMoving(right + (up * 2) + (left * 3) + (down * 4), this, &positionX, &positionY,1);
 
 		/* 타일을 완전히 다 넘어왔는지 체크 */
 		if (speedCountMax-1 == speedCount)
@@ -130,4 +106,10 @@ void player :: Draw()
 
 	}
 	else DrawFunc(image[way][0], drawPositionX, drawPositionY);
+}
+
+void player::Putbomb()
+{
+	bomb *bom = new bomb(positionX, positionY);
+	AddNode(&(map[positionY][positionX].nextNode), CreateNode(21, bom));
 }

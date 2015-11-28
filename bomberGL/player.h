@@ -1,7 +1,9 @@
 #pragma once
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
+
 #include"GameManager.h"
+#include "bomb.h"
 
 class player
 {

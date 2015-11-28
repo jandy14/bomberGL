@@ -1,7 +1,5 @@
 #include "GameManager.h"
 
-//short type[15][20];
-//void *object[15][20];
 MapStruct map[15][20];
 
 
@@ -69,24 +67,24 @@ void DrawFunc(GLubyte * image, int dx, int dy)
 	}
 }
 
-void FourWayMoving(int wayValue, void *object, int *x, int *y)
+void FourWayMoving(int wayValue, void *object, int *x, int *y, int type)
 {
 	switch (wayValue)
 	{
 	case RIGHT:
-		AddNode(&(map[*y][++(*x)].nextNode), CreateNode(2, object));
+		AddNode(&(map[*y][++(*x)].nextNode), CreateNode(type, object));
 		PopNode(&(map[*y][(*x) - 1].nextNode), object);
 		break;
 	case UP:
-		AddNode(&(map[--(*y)][*x].nextNode), CreateNode(2, object));
+		AddNode(&(map[--(*y)][*x].nextNode), CreateNode(type, object));
 		PopNode(&(map[(*y) + 1][*x].nextNode), object);
 		break;
 	case LEFT:
-		AddNode(&(map[*y][--(*x)].nextNode), CreateNode(2, object));
+		AddNode(&(map[*y][--(*x)].nextNode), CreateNode(type, object));
 		PopNode(&(map[*y][(*x) + 1].nextNode), object);
 		break;
 	case DOWN:
-		AddNode(&(map[++(*y)][*x].nextNode), CreateNode(2, object));
+		AddNode(&(map[++(*y)][*x].nextNode), CreateNode(type, object));
 		PopNode(&(map[(*y) - 1][*x].nextNode), object);
 		break;
 	}

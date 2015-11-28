@@ -151,7 +151,7 @@ void enemy::Moving()
 
 		/* 타일의 절반이상 넘어갔는지 체크 */
 		if (speedCountMax / 2 == speedCount)
-			FourWayMoving(right + (up * 2) + (left * 3) + (down * 4), this, &positionX, &positionY);
+			FourWayMoving(right + (up * 2) + (left * 3) + (down * 4), this, &positionX, &positionY, 2);
 
 		/* 타일을 완전히 다 넘어왔는지 체크 */
 		if (speedCountMax - 1 == speedCount)
