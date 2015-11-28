@@ -21,33 +21,7 @@ block::~block()
 
 void block::Draw()
 {
-	int x, y;
-	int count = 0;
-	x = this->drawPositionX;
-	y = this->drawPositionY;
-
-	for (int pixelindex = 0; pixelindex < 10800; pixelindex += 3)
-	{
-		count++;
-		if (image[pixelindex] + image[pixelindex + 1] + image[pixelindex + 2] != 765)
-		{
-			glBegin(GL_POINTS);
-			{
-				glColor3ub(image[pixelindex + 2], image[pixelindex + 1], image[pixelindex]);
-				glVertex2f(ConversionX(x), ConversionY(y));
-			}
-			glEnd();
-		}
-
-		if (count == 60)
-		{
-			y--;
-			x = this->drawPositionX;
-			count = 0;
-		}
-
-		x++;
-	}
+	DrawFunc(image, drawPositionX, drawPositionY);
 }
 
 bool block::Check()

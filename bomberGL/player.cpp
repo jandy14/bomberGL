@@ -49,7 +49,6 @@ void player::Move(int key)
 		{
 		case GLUT_KEY_RIGHT:
 			way = 0;
-			//if (type[positionY][positionX + 1] <= 10)
 			if (map[positionY][positionX + 1].nextNode->type <= 10)
 			{
 				right = true;
@@ -60,7 +59,6 @@ void player::Move(int key)
 			break;
 		case GLUT_KEY_LEFT:
 			way = 1;
-			//if (type[positionY][positionX - 1] <= 10)
 			if (map[positionY][positionX - 1].nextNode->type <= 10)
 			{
 				left = true;
@@ -71,7 +69,6 @@ void player::Move(int key)
 			break;
 		case GLUT_KEY_UP:
 			way = 2;
-			//if (type[positionY - 1][positionX] <= 10)
 			if (map[positionY - 1][positionX].nextNode->type <= 10)
 			{
 				up = true;
@@ -82,7 +79,6 @@ void player::Move(int key)
 			break;
 		case GLUT_KEY_DOWN:
 			way = 3;
-			//if (type[positionY + 1][positionX] <= 10)
 			if (map[positionY + 1][positionX].nextNode->type <= 10)
 			{
 				down = true;
@@ -107,50 +103,26 @@ void player::Moving()
 		{
 			if (right)
 			{
-				//type[positionY][positionX++] = 0;
-				//type[positionY][positionX] = 1;
-				//object[positionY][positionX] = object[positionY][positionX - 1];
-				//object[positionY][positionX - 1] = NULL;
-				map[positionY][positionX++].nextNode->type = 0;
-				map[positionY][positionX].nextNode->type = 1;
-				map[positionY][positionX].nextNode->object = map[positionY][positionX - 1].nextNode->object;
-				map[positionY][positionX - 1].nextNode->object = NULL;
+				AddNode(&(map[positionY][++positionX].nextNode), CreateNode(1, this));
+				PopNode(&(map[positionY][positionX - 1].nextNode), this);
 			}
 
 			else if (left)
 			{
-				//type[positionY][positionX--] = 0;
-				//type[positionY][positionX] = 1;
-				//object[positionY][positionX] = object[positionY][positionX + 1];
-				//object[positionY][positionX + 1] = NULL;
-				map[positionY][positionX--].nextNode->type = 0;
-				map[positionY][positionX].nextNode->type = 1;
-				map[positionY][positionX].nextNode->object = map[positionY][positionX + 1].nextNode->object;
-				map[positionY][positionX + 1].nextNode->object = NULL;
+				AddNode(&(map[positionY][--positionX].nextNode), CreateNode(1, this));
+				PopNode(&(map[positionY][positionX + 1].nextNode), this);
 			}
 
 			else if (up)
 			{
-				//type[positionY--][positionX] = 0;
-				//type[positionY][positionX] = 1;
-				//object[positionY][positionX] = object[positionY + 1][positionX];
-				//object[positionY + 1][positionX] = NULL;
-				map[positionY--][positionX].nextNode->type = 0;
-				map[positionY][positionX].nextNode->type = 1;
-				map[positionY][positionX].nextNode->object = map[positionY + 1][positionX].nextNode->object;
-				map[positionY + 1][positionX].nextNode->object = NULL;
+				AddNode(&(map[--positionY][positionX].nextNode), CreateNode(1, this));
+				PopNode(&(map[positionY + 1][positionX].nextNode), this);
 			}
 
 			else if (down)
 			{
-				//type[positionY++][positionX] = 0;
-				//type[positionY][positionX] = 1;
-				//object[positionY][positionX] = object[positionY - 1][positionX];
-				//object[positionY - 1][positionX] = NULL;
-				map[positionY++][positionX].nextNode->type = 0;
-				map[positionY][positionX].nextNode->type = 1;
-				map[positionY][positionX].nextNode->object = map[positionY - 1][positionX].nextNode->object;
-				map[positionY - 1][positionX].nextNode->object = NULL;
+				AddNode(&(map[++positionY][positionX].nextNode), CreateNode(1, this));
+				PopNode(&(map[positionY - 1][positionX].nextNode), this);
 			}
 		}
 

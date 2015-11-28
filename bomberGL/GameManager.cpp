@@ -69,6 +69,30 @@ void DrawFunc(GLubyte * image, int dx, int dy)
 	}
 }
 
+void FourWayMoving(int wayValue, void *object, int *x, int *y)
+{
+	switch (wayValue)
+	{
+	case RIGHT:
+		AddNode(&(map[*y][++(*x)].nextNode), CreateNode(2, object));
+		PopNode(&(map[*y][(*x) - 1].nextNode), object);
+		break;
+	case UP:
+		AddNode(&(map[--(*y)][*x].nextNode), CreateNode(2, object));
+		PopNode(&(map[(*y) + 1][*x].nextNode), object);
+		break;
+	case LEFT:
+		AddNode(&(map[*y][--(*x)].nextNode), CreateNode(2, object));
+		PopNode(&(map[*y][(*x) + 1].nextNode), object);
+		break;
+	case DOWN:
+		AddNode(&(map[++(*y)][*x].nextNode), CreateNode(2, object));
+		PopNode(&(map[(*y) - 1][*x].nextNode), object);
+		break;
+	}
+}
+
+
 ///* 리스트 관련 함수 *///
 
 /* 노드 생성 */
@@ -115,7 +139,7 @@ void AddNode(Node** Head, Node* newNode)
 void PopNode(Node** Head, void* object)
 {
 	Node* prevNode = (*Head);
-	Node* currentNode = (*Head)->nextNode;			// 지워야 할 노드
+	Node* currentNode = (*Head)->nextNode;
 	int i = 0;
 
 	while (currentNode != NULL)
@@ -170,15 +194,17 @@ void PopNode(Node** Head, void* object)
 }
 
 /* 노드 탐색 */
-Node* SearchNode(Node* head, void* object)
+bool SearchNode(Node* head, int type)
 {
 	Node* current = head;
 
 	while (current != NULL)
 	{
-		if (current->object == object) return current;
+		if (current->type == type) return true;
 		current = current->nextNode;
 	}
+
+	return false;
 }
 
 

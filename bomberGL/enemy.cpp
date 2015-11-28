@@ -42,7 +42,6 @@ bool enemy::Check()
 	{
 		if (positionX + 1 < 20)
 		{
-			//if (type[positionY][positionX + 1] == 0)
 			if (map[positionY][positionX + 1].nextNode->type <= 10)
 			{
 				temporaryValueX = 1;
@@ -55,7 +54,6 @@ bool enemy::Check()
 	{
 		if (positionX - 1 >= 0)
 		{
-			//if (type[positionY][positionX - 1] == 0)
 			if (map[positionY][positionX - 1].nextNode->type <= 10)
 			{
 				temporaryValueX = -1;
@@ -68,7 +66,6 @@ bool enemy::Check()
 	{
 		if (positionY - 1 >= 0)
 		{
-			//if (type[positionY - 1][positionX] == 0)
 			if (map[positionY - 1][positionX].nextNode->type <= 10)
 			{
 				temporaryValueY = -1;
@@ -79,17 +76,16 @@ bool enemy::Check()
 
 	else if (down)
 	{
-		if (positionY + 1 < 15)
-		{
-			//if (type[positionY + 1][positionX] == 0)
-			if (map[positionY + 1][positionX].nextNode->type <= 10)
-			{
-				temporaryValueY = 1;
-				return true;
-			}
-		}
+if (positionY + 1 < 15)
+{
+	if (map[positionY + 1][positionX].nextNode->type <= 10)
+	{
+		temporaryValueY = 1;
+		return true;
 	}
-	
+}
+	}
+
 	return false;
 }
 
@@ -111,16 +107,16 @@ void enemy::Move()
 			/* 1 : 오른쪽, 2 : 위, 3 : 왼쪽, 4 : 아래, 5~ : 정지 */
 			switch (randomNumber)
 			{
-			case 1:
+			case RIGHT:
 				right = true;
 				break;
-			case 2:
+			case UP:
 				up = true;
 				break;
-			case 3:
+			case LEFT:
 				left = true;
 				break;
-			case 4:
+			case DOWN:
 				down = true;
 				break;
 			default:
@@ -131,7 +127,6 @@ void enemy::Move()
 		}
 	}
 
-	//Sleep((range(rng)) * 50);
 	moving = true;
 	return;
 }
@@ -151,33 +146,7 @@ void enemy::Moving()
 
 		/* 타일의 절반이상 넘어갔는지 체크 */
 		if (speedCountMax / 2 == speedCount)
-		{
-			if (right)
-			{
-
-				AddNode(&(map[positionY][++positionX].nextNode), CreateNode(2, this));
-				PopNode(&(map[positionY][positionX - 1].nextNode), this);
-
-			}
-
-			else if (left)
-			{
-				AddNode(&(map[positionY][--positionX].nextNode), CreateNode(2, this));
-				PopNode(&(map[positionY][positionX + 1].nextNode), this);
-			}
-
-			else if (up)
-			{
-				AddNode(&(map[--positionY][positionX].nextNode), CreateNode(2, this));
-				PopNode(&(map[positionY + 1][positionX].nextNode), this);
-			}
-
-			else if (down)
-			{
-				AddNode(&(map[++positionY][positionX].nextNode), CreateNode(2, this));
-				PopNode(&(map[positionY - 1][positionX].nextNode), this);
-			}
-		}
+			FourWayMoving(right + (up * 2) + (left * 3) + (down * 4), this, &positionX, &positionY);
 
 		/* 타일을 완전히 다 넘어왔는지 체크 */
 		if (speedCountMax - 1 == speedCount)
@@ -192,5 +161,4 @@ void enemy::Moving()
 	}
 
 	return;
-
 }
