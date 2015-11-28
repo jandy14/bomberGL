@@ -1,6 +1,6 @@
 #include "enemy.h"
 
-enemy::enemy(int positionX, int positionY)
+enemy::enemy(int positionX, int positionY, GLubyte *image[4][2], GLubyte *die[3])
 {
 	way = 1;
 
@@ -12,7 +12,7 @@ enemy::enemy(int positionX, int positionY)
 
 	temporaryValueX = temporaryValueY = 0;
 	right = left = up = down = false;
-	moving = false;
+	isDying = moving = false;
 
 	this->positionX = positionX;
 	this->positionY = positionY;
@@ -29,6 +29,11 @@ enemy::enemy(int positionX, int positionY)
 
 	this->image[3][0] = LoadBmp("Image/Enemy/Down_1.bmp");
 	this->image[3][1] = LoadBmp("Image/Enemy/Down_2.bmp");
+
+	/* Die 이미지 로드 */
+	this->die[0] = LoadBmp("Image/Enemy/Die_1.bmp");
+	this->die[1] = LoadBmp("Image/Enemy/Die_2.bmp");
+	this->die[2] = LoadBmp("Image/Enemy/Die_3.bmp");
 }
 
 enemy::~enemy()
@@ -76,14 +81,14 @@ bool enemy::Check()
 
 	else if (down)
 	{
-if (positionY + 1 < 15)
-{
-	if (map[positionY + 1][positionX].nextNode->type <= 10)
-	{
-		temporaryValueY = 1;
-		return true;
-	}
-}
+		if (positionY + 1 < 15)
+		{
+			if (map[positionY + 1][positionX].nextNode->type <= 10)
+			{
+				temporaryValueY = 1;
+				return true;
+			}
+		}
 	}
 
 	return false;
@@ -96,7 +101,7 @@ void enemy::Move()
 	std::mt19937_64 rng(rd());
 	std::uniform_int_distribution<__int64> range(1, 10);
 
-	if (!moving)
+	if (!moving && !isDying)
 	{
 		while (!Check())
 		{
@@ -161,4 +166,12 @@ void enemy::Moving()
 	}
 
 	return;
+}
+
+void enemy::Die()
+{
+	if (isDying)
+	{
+		DrawFunc(die[(speedCount / 2) % 2], drawPositionX, drawPositionY);
+	}
 }

@@ -20,9 +20,11 @@ void Update(int);
 GLubyte *LoadBmp(const char *path);
 extern MapStruct map[15][20];
 //===================================================================변수선언
-player **p;
-enemy **e;
-block **b;
+player *p;
+enemy *e;
+block *b;
+GLubyte *playerImage[4][5], *enemyImage[4][2], *blockImage[2], *enemyDie[3], *playerDie[3];
+Node* current;
 int enemymax;
 int blockmax;
 //===================================================================메인
@@ -49,70 +51,86 @@ void glutInit()
 	int enemycount = 0;
 	std::ifstream f;
 
-	f.open("Info/mapinfo.txt");
-//===============================================count를 세주기 위한 반복구문
-	for (int i = 0; i < 15; i++)
-	{
-		for (int j = 0; j < 20; j++)
-		{
-			f >> a;
-			if (a > 10)
-				blockcount++;
-			else if (a == 2)
-				enemycount++;
-		}
-	}
 	/* 맵 배열 초기화 */
 	for (int i = 0; i < 15; i++)
 		for (int j = 0; j < 20; j++)
 			map[i][j].nextNode = NULL;
-//===============================================count된만큼 데이터할당
-	p = (player **)malloc(sizeof(player *));	//어차피 하나긴 한데 통일했다;
-	e = (enemy **)malloc(sizeof(enemy *)*enemycount);
-	b = (block **)malloc(sizeof(block *)*blockcount);
-//===============================================파일포인터를 다시 처음으로
-	f.clear();		//버퍼정리
-	f.seekg(0, std::ios::beg);		//파일포인터를 맨앞으로
-//===============================================값저장
-	blockmax = blockcount;
-	enemymax = enemycount;
+
+	/* Player 이미지 로드 */
+	playerImage[0][0] = LoadBmp("Image/player/Right_1.bmp");
+	playerImage[0][1] = LoadBmp("Image/player/Right_2.bmp");
+	playerImage[0][2] = LoadBmp("Image/player/Right_3.bmp");
+	playerImage[0][3] = LoadBmp("Image/player/Right_4.bmp");
+	playerImage[0][4] = LoadBmp("Image/player/Right_5.bmp");
+
+	playerImage[1][0] = LoadBmp("Image/player/Left_1.bmp");
+	playerImage[1][1] = LoadBmp("Image/player/Left_2.bmp");
+	playerImage[1][2] = LoadBmp("Image/player/Left_3.bmp");
+	playerImage[1][3] = LoadBmp("Image/player/Left_4.bmp");
+	playerImage[1][4] = LoadBmp("Image/player/Left_5.bmp");
+
+	playerImage[2][0] = LoadBmp("Image/player/Up_1.bmp");
+	playerImage[2][1] = LoadBmp("Image/player/Up_2.bmp");
+	playerImage[2][2] = LoadBmp("Image/player/Up_3.bmp");
+	playerImage[2][3] = LoadBmp("Image/player/Up_4.bmp");
+	playerImage[2][4] = LoadBmp("Image/player/Up_5.bmp");
+
+	playerImage[3][0] = LoadBmp("Image/player/Down_1.bmp");
+	playerImage[3][1] = LoadBmp("Image/player/Down_2.bmp");
+	playerImage[3][2] = LoadBmp("Image/player/Down_3.bmp");
+	playerImage[3][3] = LoadBmp("Image/player/Down_4.bmp");
+	playerImage[3][4] = LoadBmp("Image/player/Down_5.bmp");
+
+	/* Enemy 이미지 로드 */
+	enemyImage[0][0] = LoadBmp("Image/Enemy/Right_1.bmp");
+	enemyImage[0][1] = LoadBmp("Image/Enemy/Right_2.bmp");
+
+	enemyImage[1][0] = LoadBmp("Image/Enemy/Up_1.bmp");
+	enemyImage[1][1] = LoadBmp("Image/Enemy/Up_2.bmp");
+
+	enemyImage[2][0] = LoadBmp("Image/Enemy/Left_1.bmp");
+	enemyImage[2][1] = LoadBmp("Image/Enemy/Left_2.bmp");
+
+	enemyImage[3][0] = LoadBmp("Image/Enemy/Down_1.bmp");
+	enemyImage[3][1] = LoadBmp("Image/Enemy/Down_2.bmp");
+
+	/* Enemy Die 이미지 로드 */
+	enemyDie[0] = LoadBmp("Image/Enemy/Die_1.bmp");
+	enemyDie[1] = LoadBmp("Image/Enemy/Die_2.bmp");
+	enemyDie[2] = LoadBmp("Image/Enemy/Die_3.bmp");
+
+	/* Block 이미지 로드 */
+	blockImage[0] = LoadBmp("Image/Block/Brick1.bmp");
+	blockImage[1] = LoadBmp("Image/Block/Brick2.bmp");
+
 //===============================================객체생성및배치
+	f.open("Info/mapinfo.txt");
+
 	for (int i = 0; i < 15; i++)
 	{
 		for (int j = 0; j < 20; j++)
 		{
 			f >> a;
-			if (a == 12)
+
+			switch (a)
 			{
-				b[--blockcount] = new block(j, i, LoadBmp("Image/Block/Brick2.bmp"));//맵상xy좌표
-				AddNode(&(map[i][j].nextNode), CreateNode(12, b[blockcount]));
-				//type[i][j] = 12;
-				//object[i][j] = b[blockcount];
-			}
-			else if (a == 11)
-			{
-				b[--blockcount] = new block(j, i, LoadBmp("Image/Block/Brick1.bmp"));//맵상xy좌표
-				AddNode(&(map[i][j].nextNode), CreateNode(11, b[blockcount]));
-				//type[i][j] = 11;
-				//object[i][j] = b[blockcount];
-			}
-			else if (a == 2)
-			{
-				e[--enemycount] = new enemy(j, i);//맵상xy좌표
-				AddNode(&(map[i][j].nextNode), CreateNode(2, e[enemycount]));
-				//type[i][j] = 2;
-				//object[i][j] = e[enemycount];
-			}
-			else if (a == 1)
-			{
-				p[0] = new player(j, i);//맵상xy좌표
-				AddNode(&(map[i][j].nextNode), CreateNode(1, p[0]));
-				//type[i][j] = 1;
-				//object[i][j] = p[0];
-			}
-			else if (a == 0)
-			{
+			case 0:
 				AddNode(&(map[i][j].nextNode), CreateNode(0, NULL));
+				break;
+			case 1:
+				p = new player(j, i, playerImage, playerDie);//맵상xy좌표
+				AddNode(&(map[i][j].nextNode), CreateNode(a, p));
+				break;
+			case 2:
+				e = new enemy(j, i, enemyImage, enemyDie);
+				AddNode(&(map[i][j].nextNode), CreateNode(a, e));
+				break;
+			case 11: case 12:
+				b = new block(j, i, blockImage[a % 11]);
+				AddNode(&(map[i][j].nextNode), CreateNode(a, b));
+				break;
+			default:
+				break;
 			}
 		}
 	}
@@ -128,16 +146,42 @@ void Resize(int width, int height)
 void Dodisplay()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	p[0]->Draw();
-	for (int i = 0; i < enemymax && e[i] != NULL; i++)
-		e[i]->Draw();
-	for (int i = 0; i < blockmax && b[i] != NULL; i++)
-		b[i]->Draw();
+
+	for (int i = 0; i < 15; i++)
+	{
+		for (int j = 0; j < 20; j++)
+		{
+			current = map[i][j].nextNode;
+			while (current != NULL)
+			{
+				switch (current->type)
+				{
+				case 1:
+					p = (player *)current->object;
+					p->Draw();
+					break;
+				case 2:
+					e = (enemy *)current->object;
+					e->Draw();
+					break;
+				case 11: case 12:
+					b = (block *)current->object;
+					b->Draw();
+					break;
+				default:
+					break;
+				}
+
+				current = current->nextNode;
+			}
+		}
+	}
+
 	glutSwapBuffers();
 }
 void Dospecial(int key, int x, int y)
 {
-	p[0]->Move(key);
+	p->Move(key);
 //	player.move();식으로 key값으로 방향만 받아준다
 }
 void Dokeyboard(unsigned char value, int x, int y)
@@ -151,13 +195,35 @@ void Update(int value)
 	glutTimerFunc(30, Update, 1);
 //각 객체마다 갱신해줘야 하는 내용이 들어간다.
 //s_map구조체안을 다 둘러보면서 갱신해줄지도 모르겠다.
-	for (int i = 0; i < enemymax && e[i] != NULL; i++)
-		e[i]->Move();
-	p[0]->Moving();
-	for (int i = 0; i < enemymax && e[i] != NULL; i++)
-		e[i]->Moving();
-	for (int i = 0; i < blockmax && b[i] != NULL; i++)
-		b[i]->Moving();
+	
+	for (int i = 0; i < 15; i++)
+	{
+		for (int j = 0; j < 20; j++)
+		{
+			current = map[i][j].nextNode;
+			while (current != NULL)
+			{
+				switch (current->type)
+				{
+				case 1:
+					p = (player *)current->object;
+					p->Moving();
+					break;
+				case 2:
+					e = (enemy *)current->object;
+					e->Move();
+					e->Moving();
+					break;
+				case 11: case 12:
+					break;
+				default:
+					break;
+				}
+
+				current = current->nextNode;
+			}
+		}
+	}
 
 	glutPostRedisplay();
 }

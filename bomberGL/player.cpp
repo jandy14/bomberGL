@@ -1,6 +1,6 @@
 #include "player.h"
 
-player::player(int x, int y)
+player::player(int x, int y, GLubyte *im[4][5], GLubyte *d[3])
 {
 	positionX = x;
 	positionY = y;
@@ -16,7 +16,12 @@ player::player(int x, int y)
 	moving = false;
 	right = left = up = down = false;
 
-	image[0][0] = LoadBmp("Image/player/Right_1.bmp");
+	for (int i = 0; i < 4; i++) for (int j = 0; j < 5; j++) this->image[i][j] = im[i][j];
+	//this->image = image[0][0];
+	//this->image[0][0] = image[0][0];
+	way = 0;
+
+	/*image[0][0] = LoadBmp("Image/player/Right_1.bmp");
 	image[0][1] = LoadBmp("Image/player/Right_2.bmp");
 	image[0][2] = LoadBmp("Image/player/Right_3.bmp");
 	image[0][3] = LoadBmp("Image/player/Right_4.bmp");
@@ -38,7 +43,7 @@ player::player(int x, int y)
 	image[3][1] = LoadBmp("Image/player/Down_2.bmp");
 	image[3][2] = LoadBmp("Image/player/Down_3.bmp");
 	image[3][3] = LoadBmp("Image/player/Down_4.bmp");
-	image[3][4] = LoadBmp("Image/player/Down_5.bmp");
+	image[3][4] = LoadBmp("Image/player/Down_5.bmp");*/
 }
 
 void player::Move(int key)
