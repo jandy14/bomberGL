@@ -24,5 +24,6 @@ public:
 	~block();
 };
 
+extern MapStruct map[15][20];
 
 #endif

@@ -15,13 +15,18 @@ player::player(int x, int y, GLubyte *image[4][5], GLubyte *die[3])
 	speedCount = 0;
 	moving = false;
 	right = left = up = down = false;
+	isdying = false;
+	dyingcount = 0;
+
 
 	for (int i = 0; i < 4; i++) for (int j = 0; j < 5; j++) this->image[i][j] = image[i][j];
+	for (int i = 0; i < 3; i++)
+		this->die[i] = die[i];
 }
 
 void player::Move(int key)
 {
-	if (!moving)
+	if (!moving && !isdying)
 	{
 		switch (key)
 		{
@@ -70,7 +75,7 @@ void player::Move(int key)
 }
 void player::Moving()
 {
-	if (moving)
+	if (moving && !isdying)
 	{
 		/* 상하좌우 움직임 명령 */
 		drawPositionX += (60 / speedCountMax) * temporaryValueX;
@@ -78,10 +83,14 @@ void player::Moving()
 
 		/* 타일의 절반이상 넘어갔는지 체크 */
 		if (speedCountMax / 2 == speedCount)
-			FourWayMoving(right + (up * 2) + (left * 3) + (down * 4), this, &positionX, &positionY,1);
+		{
+			FourWayMoving(right + (up * 2) + (left * 3) + (down * 4), this, &positionX, &positionY, 1);
+			if (SearchNode(map[positionY][positionX].nextNode, 2))
+				Killplayer();
+		}
 
 		/* 타일을 완전히 다 넘어왔는지 체크 */
-		if (speedCountMax-1 == speedCount)
+		if (speedCountMax - 1 == speedCount)
 		{
 			moving = false;
 			right = left = up = down = false;
@@ -96,20 +105,47 @@ void player::Moving()
 }
 void player :: Draw()
 {
-	if (moving)
+	if (isdying)
+		DrawFunc(die[dyingcount%3], drawPositionX, drawPositionY);
+	else
 	{
-		if (speedCount * 5 / 4 > speedCountMax) DrawFunc(image[way][4], drawPositionX, drawPositionY);
-		else if (speedCount * 5 / 3 > speedCountMax) DrawFunc(image[way][3], drawPositionX, drawPositionY);
-		else if (speedCount * 5 / 2 > speedCountMax) DrawFunc(image[way][2], drawPositionX, drawPositionY);
-		else if (speedCount * 5 > speedCountMax) DrawFunc(image[way][1], drawPositionX, drawPositionY);
-		else DrawFunc(image[way][0], drawPositionX, drawPositionY);
+		if (moving)
+		{
+			if (speedCount * 5 / 4 > speedCountMax) DrawFunc(image[way][4], drawPositionX, drawPositionY);
+			else if (speedCount * 5 / 3 > speedCountMax) DrawFunc(image[way][3], drawPositionX, drawPositionY);
+			else if (speedCount * 5 / 2 > speedCountMax) DrawFunc(image[way][2], drawPositionX, drawPositionY);
+			else if (speedCount * 5 > speedCountMax) DrawFunc(image[way][1], drawPositionX, drawPositionY);
+			else DrawFunc(image[way][0], drawPositionX, drawPositionY);
 
+		}
+		else DrawFunc(image[way][0], drawPositionX, drawPositionY);
 	}
-	else DrawFunc(image[way][0], drawPositionX, drawPositionY);
 }
 
 void player::Putbomb(GLubyte * image, GLubyte **explosionimage)
 {
-	bomb *bom = new bomb(positionX, positionY,image, explosionimage);
-	AddNode(&(map[positionY][positionX].nextNode), CreateNode(21, bom));
+	if (!SearchNode(map[positionY][positionX].nextNode, 21) && !isdying)
+	{
+		bomb *bom = new bomb(positionX, positionY, image, explosionimage);
+		AddNode(&(map[positionY][positionX].nextNode), CreateNode(21, bom));
+	}
+}
+
+void player::Die()
+{
+	if (isdying)
+	{
+		if (dyingcount == 8)
+		{
+			PopNode(&(map[positionY][positionX].nextNode), this);
+			delete this;
+		}
+
+		dyingcount++;
+	}
+}
+
+void player::Killplayer()
+{
+	isdying = true;
 }

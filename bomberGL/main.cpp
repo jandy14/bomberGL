@@ -12,7 +12,6 @@ void Dodisplay();
 void Dospecial(int, int, int);
 void Dokeyboard(unsigned char, int, int);
 void Update(int);
-GLubyte *LoadBmp(const char *path);
 //===================================================================변수선언
 player *p;
 enemy *e;
@@ -76,6 +75,10 @@ void glutInit()
 	playerImage[3][2] = LoadBmp("Image/player/Down_3.bmp");
 	playerImage[3][3] = LoadBmp("Image/player/Down_4.bmp");
 	playerImage[3][4] = LoadBmp("Image/player/Down_5.bmp");
+
+	playerDie[0] = LoadBmp("Image/player/Left_1.bmp");
+	playerDie[1] = LoadBmp("Image/player/Right_1.bmp");
+	playerDie[2] = LoadBmp("Image/player/Up_1.bmp");
 
 	/* Enemy 이미지 로드 */
 	enemyImage[0][0] = LoadBmp("Image/Enemy/Right_1.bmp");
@@ -220,6 +223,7 @@ void Update(int value)
 				{
 				case 1:
 					p = (player *)current->object;
+					p->Die();
 					p->Moving();
 
 					if (current->object != p)
