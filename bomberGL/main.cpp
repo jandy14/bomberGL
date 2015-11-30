@@ -14,8 +14,10 @@ enemy *e;
 block *b;
 bomb *bom;
 fire *f;
+Item *i;
 GLubyte ***playerImage, ***enemyImage, **blockImage, *bombImage, **bombexplosionimage;
 GLubyte **playerDie, **enemyDie, **blockDestroy;
+GLubyte **itemImage;
 Node* current;
 Node* prev = NULL;
 extern MapStruct map[15][20];
@@ -62,6 +64,7 @@ void glutInit()
 	playerDie = new GLubyte*[3];
 	enemyDie = new GLubyte*[3];
 	blockDestroy = new GLubyte*[5];
+	itemImage = new GLubyte*[2];
 
 	/* Player 이미지 로드 */
 	playerImage[0][0] = LoadBmp("Image/player/Right_1.bmp");
@@ -131,6 +134,9 @@ void glutInit()
 	bombexplosionimage[5] = LoadBmp("Image/Bomb/Explosion5.bmp");
 	bombexplosionimage[6] = LoadBmp("Image/Bomb/Explosion6.bmp");
 
+	/* Item 이미지 로드 */
+	itemImage[0] = LoadBmp("Image/Item/Item_IncreaseBombCount.bmp");
+
 	/* 객체 생성 및 배치 */
 	f.open("Info/mapinfo.txt");
 
@@ -154,7 +160,7 @@ void glutInit()
 				AddNode(&(map[i][j].nextNode), CreateNode(objectType, e));
 				break;
 			case 11: case 12:
-				b = new block(j, i, blockImage[objectType % 11], blockDestroy);
+				b = new block(j, i, blockImage[objectType % 11], blockDestroy, itemImage);
 				AddNode(&(map[i][j].nextNode), CreateNode(objectType, b));
 				break;
 			default:
@@ -177,11 +183,11 @@ void Dodisplay()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	for (int i = 0; i < 15; i++)
+	for (int x = 0; x < 15; x++)
 	{
-		for (int j = 0; j < 20; j++)
+		for (int y = 0; y < 20; y++)
 		{
-			current = map[i][j].nextNode;
+			current = map[x][y].nextNode;
 			while (current != NULL)
 			{
 				switch (current->type)
@@ -206,6 +212,9 @@ void Dodisplay()
 					f = (fire *)current->object;
 					f->Draw();
 					break;
+				case 41:
+					i = (Item *)current->object;
+					i->Draw();
 				default:
 					break;
 				}
@@ -235,11 +244,11 @@ void Update(int value)
 	glutTimerFunc(30, Update, 1);
 	//각 객체마다 갱신해줘야 하는 내용이 들어간다.
 	//s_map구조체안을 다 둘러보면서 갱신해줄지도 모르겠다.	
-	for (int i = 0; i < 15; i++)
+	for (int x = 0; x < 15; x++)
 	{
-		for (int j = 0; j < 20; j++)
+		for (int y = 0; y < 20; y++)
 		{
-			current = map[i][j].nextNode;
+			current = map[x][y].nextNode;
 			while (current != NULL)
 			{
 				switch (current->type)
@@ -272,6 +281,12 @@ void Update(int value)
 				case 12:
 					b = (block *)current->object;
 					b->Destroy();
+
+					if (current->object != b)
+					{
+						current = prev->nextNode;
+						continue;
+					}
 					break;
 				case 21:
 					bom = (bomb *)current->object;
@@ -292,6 +307,15 @@ void Update(int value)
 						continue;
 					}
 					break;
+				case 41:
+					i = (Item *)current->object;
+					i->Moving();
+
+					if (current->object != i)
+					{
+						current = prev->nextNode;
+						continue;
+					}
 				default:
 					break;
 				}

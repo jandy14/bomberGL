@@ -46,5 +46,6 @@ void * SearchNode(Node* Head, int type);		//object값이 들어있는 노드의 주소값리�
 #include "block.h"
 #include "bomb.h"
 #include "fire.h"
+#include "Item.h"
 
 #endif

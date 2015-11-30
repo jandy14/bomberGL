@@ -120,12 +120,6 @@ void enemy::Move()
 			case DOWN:
 				down = true;
 				break;
-			/*case 7:
-				//isDying = true;
-				block *b;
-				if (b = (block*)SearchNode(map[2][2].nextNode, 12))
-					b->Break();
-				return;*/
 			default:
 				return;
 			}

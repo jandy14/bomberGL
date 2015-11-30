@@ -30,17 +30,20 @@ void player::Move(int key)
 		{
 		case GLUT_KEY_RIGHT:
 			way = 0;
-			if (map[positionY][positionX + 1].nextNode->type <= 10)
+			if (map[positionY][positionX + 1].nextNode->type <= 10
+				|| map[positionY][positionX + 1].nextNode->type > 40)
 			{
 				right = true;
 				temporaryValueX = 1;
 				moving = true;
 			}
+
 			left = up = down = false;
 			break;
 		case GLUT_KEY_LEFT:
 			way = 1;
-			if (map[positionY][positionX - 1].nextNode->type <= 10)
+			if (map[positionY][positionX - 1].nextNode->type <= 10 
+				|| map[positionY][positionX - 1].nextNode->type > 40)
 			{
 				left = true;
 				temporaryValueX = -1;
@@ -50,7 +53,8 @@ void player::Move(int key)
 			break;
 		case GLUT_KEY_UP:
 			way = 2;
-			if (map[positionY - 1][positionX].nextNode->type <= 10)
+			if (map[positionY - 1][positionX].nextNode->type <= 10 
+				|| map[positionY - 1][positionX].nextNode->type > 40)
 			{
 				up = true;
 				temporaryValueY = -1;
@@ -60,7 +64,8 @@ void player::Move(int key)
 			break;
 		case GLUT_KEY_DOWN:
 			way = 3;
-			if (map[positionY + 1][positionX].nextNode->type <= 10)
+			if (map[positionY + 1][positionX].nextNode->type <= 10 
+				|| map[positionY + 1][positionX].nextNode->type > 40)
 			{
 				down = true;
 				temporaryValueY = 1;
@@ -82,9 +87,17 @@ void player::Moving()
 		/* 타일의 절반이상 넘어갔는지 체크 */
 		if (speedCountMax / 2 == speedCount)
 		{
+			Item *i;
+
 			FourWayMoving(right + (up * 2) + (left * 3) + (down * 4), this, &positionX, &positionY, 1);
 			if (SearchNode(map[positionY][positionX].nextNode, 2))//이동한 위치에 적이 있는지 확인 없으면 true
 				Kill();
+			if (i = (Item *)SearchNode(map[positionY][positionX].nextNode, 41))
+			{
+				i->Destroy();
+				Upgrade(41);
+			}
+
 		}
 
 		/* 타일을 완전히 다 넘어왔는지 체크 */
@@ -156,4 +169,15 @@ void player::Getbomb()
 {
 	if (nowbomb < maxbomb)
 		nowbomb++;
+}
+
+void player::Upgrade(int type)
+{
+	switch (type)
+	{
+	case 41:
+		maxbomb++;
+		nowbomb++;
+		break;
+	}
 }

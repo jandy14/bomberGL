@@ -1,6 +1,6 @@
 #include "block.h"
 
-block::block(int x, int y, GLubyte *image, GLubyte **destroy)
+block::block(int x, int y, GLubyte *image, GLubyte **destroy, GLubyte **itemList)
 {
 	speedCount = 0;
 	speedCountMax = 12;
@@ -19,6 +19,7 @@ block::block(int x, int y, GLubyte *image, GLubyte **destroy)
 
 	this->image = image;
 	this->destroy = destroy;
+	this->itemList = itemList;
 }
 
 block::~block()
@@ -53,7 +54,11 @@ void block::Destroy()
 	{
 		if (breakCount == 4)
 		{
+			Item *i;
+			i = new Item(positionX, positionY, itemList[0]);
 			PopNode(&(map[positionY][positionX].nextNode), this);
+			AddNode(&(map[positionY][positionX].nextNode), CreateNode(41, i));
+			
 			delete this;
 		}
 
