@@ -183,3 +183,8 @@ void enemy::Die()
 		dyingCount++;
 	}
 }
+
+void enemy::Kill()
+{
+	isDying = true;
+}

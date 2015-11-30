@@ -34,8 +34,16 @@ void bomb::Countdown()
 
 void bomb::Explosion()
 {
+	fire * f;
 	if (count == 0)
+	{
 		explosing = true;
+		for (int i = 1; i <= 4; i++)
+		{
+			f = new fire(explosionimage[0], positionX, positionY, i);
+			AddNode(&(map[positionY][positionX].nextNode), CreateNode(31, f));
+		}
+	}
 	else if (count <=  -7)
 	{
 		PopNode(&(map[positionY][positionX].nextNode), this);

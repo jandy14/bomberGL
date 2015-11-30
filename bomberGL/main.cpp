@@ -1,10 +1,6 @@
 //===================================================================전처리
 #pragma warning(disable:4996)
 #include "GameManager.h"
-#include "player.h"
-#include "enemy.h"
-#include "block.h"
-#include "bomb.h"
 //===================================================================함수선언
 void glutInit();
 void Resize(int, int);
@@ -17,6 +13,7 @@ player *p;
 enemy *e;
 block *b;
 bomb *bom;
+fire *f;
 GLubyte *playerImage[4][5], *enemyImage[4][2], *blockImage[2], *bombImage, *bombexplosionimage[7];
 GLubyte *playerDie[3], *enemyDie[3];
 Node* current;
@@ -183,6 +180,10 @@ void Dodisplay()
 					bom = (bomb *)current->object;
 					bom->Draw();
 					break;
+				case 31:
+					f = (fire *)current->object;
+					f->Draw();
+					break;
 				default:
 					break;
 				}
@@ -251,6 +252,15 @@ void Update(int value)
 					bom->Countdown();
 					bom->Explosion();
 					if (current->object != bom)
+					{
+						current = prev->nextNode;
+						continue;
+					}
+					break;
+				case 31:
+					f = (fire *)current->object;
+					f->Moving();
+					if (current->object != f)
 					{
 						current = prev->nextNode;
 						continue;

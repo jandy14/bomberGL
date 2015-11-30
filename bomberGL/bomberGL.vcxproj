@@ -123,6 +123,7 @@
     <ClCompile Include="block.cpp" />
     <ClCompile Include="bomb.cpp" />
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="fire.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="player.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="block.h" />
     <ClInclude Include="bomb.h" />
     <ClInclude Include="enemy.h" />
+    <ClInclude Include="fire.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="player.h" />
   </ItemGroup>

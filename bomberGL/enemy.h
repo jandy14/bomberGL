@@ -28,6 +28,7 @@ public:
 	void Draw();																// 객체의 이미지를 그려줌
 	void Moving();																// move()에서 받은 명령을 시행(pixelx,y 설정)
 	void Die();																	// 경단이 죽는 함수
+	void Kill();
 };
 
 extern MapStruct map[15][20];
