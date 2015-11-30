@@ -248,6 +248,7 @@ void Update(int value)
 	{
 		for (int y = 0; y < 20; y++)
 		{
+			prev = NULL;
 			current = map[x][y].nextNode;
 			while (current != NULL)
 			{
@@ -260,7 +261,8 @@ void Update(int value)
 
 					if (current->object != p)
 					{
-						current = prev->nextNode;
+						if (prev != NULL) current = prev->nextNode;
+						else if (prev == NULL) current = NULL;
 						continue;
 					}
 					break;
@@ -272,7 +274,8 @@ void Update(int value)
 
 					if (current->object != e)
 					{
-						current = prev->nextNode;
+						if(prev != NULL) current = prev->nextNode;
+						else if (prev == NULL) current = NULL;
 						continue;
 					}
 					break;
@@ -284,7 +287,8 @@ void Update(int value)
 
 					if (current->object != b)
 					{
-						current = prev->nextNode;
+						if (prev != NULL) current = prev->nextNode;
+						else if (prev == NULL) current = NULL;
 						continue;
 					}
 					break;
@@ -294,7 +298,8 @@ void Update(int value)
 					bom->Explosion();
 					if (current->object != bom)
 					{
-						current = prev->nextNode;
+						if (prev != NULL) current = prev->nextNode;
+						else if (prev == NULL) current = NULL;
 						continue;
 					}
 					break;
@@ -303,7 +308,8 @@ void Update(int value)
 					f->Moving();
 					if (current->object != f)
 					{
-						current = prev->nextNode;
+						if (prev != NULL) current = prev->nextNode;
+						else if (prev == NULL) current = NULL;
 						continue;
 					}
 					break;
@@ -313,7 +319,8 @@ void Update(int value)
 
 					if (current->object != i)
 					{
-						current = prev->nextNode;
+						if (prev != NULL) current = prev->nextNode;
+						else if (prev == NULL) current = NULL;
 						continue;
 					}
 				default:

@@ -92,12 +92,12 @@ void player::Moving()
 			FourWayMoving(right + (up * 2) + (left * 3) + (down * 4), this, &positionX, &positionY, 1);
 			if (SearchNode(map[positionY][positionX].nextNode, 2))//이동한 위치에 적이 있는지 확인 없으면 true
 				Kill();
+
 			if (i = (Item *)SearchNode(map[positionY][positionX].nextNode, 41))
 			{
 				i->Destroy();
 				Upgrade(41);
 			}
-
 		}
 
 		/* 타일을 완전히 다 넘어왔는지 체크 */
