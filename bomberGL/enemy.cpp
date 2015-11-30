@@ -35,7 +35,9 @@ bool enemy::Check()
 	{
 		if (positionX + 1 < 20)
 		{
-			if (map[positionY][positionX + 1].nextNode->type <= 10)
+			if (!SearchNode(map[positionY][positionX + 1].nextNode, 11) 
+				&& !SearchNode(map[positionY][positionX + 1].nextNode, 12) 
+				&& !SearchNode(map[positionY][positionX + 1].nextNode, 21))
 			{
 				temporaryValueX = 1;
 				return true;
@@ -47,7 +49,9 @@ bool enemy::Check()
 	{
 		if (positionX - 1 >= 0)
 		{
-			if (map[positionY][positionX - 1].nextNode->type <= 10)
+			if (!SearchNode(map[positionY][positionX - 1].nextNode, 11) 
+				&& !SearchNode(map[positionY][positionX - 1].nextNode, 12) 
+				&& !SearchNode(map[positionY][positionX - 1].nextNode, 21))
 			{
 				temporaryValueX = -1;
 				return true;
@@ -59,7 +63,9 @@ bool enemy::Check()
 	{
 		if (positionY - 1 >= 0)
 		{
-			if (map[positionY - 1][positionX].nextNode->type <= 10)
+			if (!SearchNode(map[positionY - 1][positionX].nextNode, 11) 
+				&& !SearchNode(map[positionY - 1][positionX].nextNode, 12) 
+				&& !SearchNode(map[positionY - 1][positionX].nextNode, 21))
 			{
 				temporaryValueY = -1;
 				return true;
@@ -71,7 +77,9 @@ bool enemy::Check()
 	{
 		if (positionY + 1 < 15)
 		{
-			if (map[positionY + 1][positionX].nextNode->type <= 10)
+			if (!SearchNode(map[positionY + 1][positionX].nextNode, 11) 
+				&& !SearchNode(map[positionY + 1][positionX].nextNode, 12) 
+				&& !SearchNode(map[positionY + 1][positionX].nextNode, 21))
 			{
 				temporaryValueY = 1;
 				return true;
@@ -113,7 +121,10 @@ void enemy::Move()
 				down = true;
 				break;
 			/*case 7:
-				isDying = true;
+				//isDying = true;
+				block *b;
+				if (b = (block*)SearchNode(map[2][2].nextNode, 12))
+					b->Break();
 				return;*/
 			default:
 				return;
@@ -146,8 +157,8 @@ void enemy::Moving()
 		{
 			player *p;
 			FourWayMoving(right + (up * 2) + (left * 3) + (down * 4), this, &positionX, &positionY, 2);
-			if (p=(player *)SearchNode(map[positionY][positionX].nextNode, 1))//이동한 위치에 적이 있는지 확인 없으면 true
-				p->Killplayer();
+			if (p = (player *)SearchNode(map[positionY][positionX].nextNode, 1))//이동한 위치에 적이 있는지 확인 없으면 true
+				p->Kill();
 		}
 
 		/* 타일을 완전히 다 넘어왔는지 체크 */

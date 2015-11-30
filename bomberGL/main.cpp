@@ -15,7 +15,7 @@ block *b;
 bomb *bom;
 fire *f;
 GLubyte ***playerImage, ***enemyImage, **blockImage, *bombImage, **bombexplosionimage;
-GLubyte **playerDie, **enemyDie;
+GLubyte **playerDie, **enemyDie, **blockDestroy;
 Node* current;
 Node* prev = NULL;
 extern MapStruct map[15][20];
@@ -61,6 +61,7 @@ void glutInit()
 	bombexplosionimage = new GLubyte*[7];
 	playerDie = new GLubyte*[3];
 	enemyDie = new GLubyte*[3];
+	blockDestroy = new GLubyte*[5];
 
 	/* Player 이미지 로드 */
 	playerImage[0][0] = LoadBmp("Image/player/Right_1.bmp");
@@ -113,6 +114,13 @@ void glutInit()
 	blockImage[0] = LoadBmp("Image/Block/Brick1.bmp");
 	blockImage[1] = LoadBmp("Image/Block/Brick2.bmp");
 
+	/* Block Break 이미지 로드 */
+	blockDestroy[0] = LoadBmp("Image/Block/Break_1.bmp");
+	blockDestroy[1] = LoadBmp("Image/Block/Break_2.bmp");
+	blockDestroy[2] = LoadBmp("Image/Block/Break_3.bmp");
+	blockDestroy[3] = LoadBmp("Image/Block/Break_4.bmp");
+	blockDestroy[4] = LoadBmp("Image/Block/Break_5.bmp");
+
 	/* Bomb 이미지 로드*/
 	bombImage = LoadBmp("Image/Bomb/Bomb.bmp");
 	bombexplosionimage[0] = LoadBmp("Image/Bomb/Explosion0.bmp");
@@ -146,7 +154,7 @@ void glutInit()
 				AddNode(&(map[i][j].nextNode), CreateNode(objectType, e));
 				break;
 			case 11: case 12:
-				b = new block(j, i, blockImage[objectType % 11]);
+				b = new block(j, i, blockImage[objectType % 11], blockDestroy);
 				AddNode(&(map[i][j].nextNode), CreateNode(objectType, b));
 				break;
 			default:
@@ -259,7 +267,11 @@ void Update(int value)
 						continue;
 					}
 					break;
-				case 11: case 12:
+				case 11: 
+					break;
+				case 12:
+					b = (block *)current->object;
+					b->Destroy();
 					break;
 				case 21:
 					bom = (bomb *)current->object;

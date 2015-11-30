@@ -87,6 +87,7 @@ void fire::Destroyobject(int x, int y)
 	Node * currentNode = map[y][x].nextNode;
 	player * p;
 	enemy * e;
+	block *b;
 	bomb * bom;
 		while (currentNode != NULL)
 		{
@@ -94,7 +95,7 @@ void fire::Destroyobject(int x, int y)
 			{
 			case 1:
 				p = (player *)currentNode->object;
-				p->Killplayer();
+				p->Kill();
 				break;
 			case 2:
 				e = (enemy *)currentNode->object;
@@ -104,6 +105,8 @@ void fire::Destroyobject(int x, int y)
 				movecount = 0;
 				break;
 			case 12:
+				b = (block *)currentNode->object;
+				b->Break();
 				movecount = 0;
 				break;
 			case 21:

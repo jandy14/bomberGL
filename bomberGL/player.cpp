@@ -84,7 +84,7 @@ void player::Moving()
 		{
 			FourWayMoving(right + (up * 2) + (left * 3) + (down * 4), this, &positionX, &positionY, 1);
 			if (SearchNode(map[positionY][positionX].nextNode, 2))//이동한 위치에 적이 있는지 확인 없으면 true
-				Killplayer();
+				Kill();
 		}
 
 		/* 타일을 완전히 다 넘어왔는지 체크 */
@@ -143,7 +143,7 @@ void player::Die()
 	}
 }
 
-void player::Killplayer()
+void player::Kill()
 {
 	isdying = true;
 }
