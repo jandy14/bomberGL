@@ -1,17 +1,15 @@
 #include "bomb.h"
 
-
-
-bomb::bomb(int x, int y,GLubyte* image ,GLubyte ** explosionimage)
+bomb::bomb(int x, int y,GLubyte *image ,GLubyte **explosionimage)
 {
 	positionX = x;
 	positionY = y;
 	drawPositionX = x * 60;
 	drawPositionY = (y * 60) + 60;
 	count = 60;
+
 	this->image = image;
-	for (int i = 0; i < 7; i++)
-		this->explosionimage[i] = explosionimage[i];
+	this->explosionimage = explosionimage;
 }
 
 

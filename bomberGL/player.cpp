@@ -1,6 +1,6 @@
 #include "player.h"
 
-player::player(int x, int y, GLubyte *image[4][5], GLubyte *die[3])
+player::player(int x, int y, GLubyte ***image, GLubyte **die)
 {
 	positionX = x;
 	positionY = y;
@@ -18,10 +18,8 @@ player::player(int x, int y, GLubyte *image[4][5], GLubyte *die[3])
 	isdying = false;
 	dyingcount = 0;
 
-
-	for (int i = 0; i < 4; i++) for (int j = 0; j < 5; j++) this->image[i][j] = image[i][j];
-	for (int i = 0; i < 3; i++)
-		this->die[i] = die[i];
+	this->image = image;
+	this->die = die;
 }
 
 void player::Move(int key)

@@ -14,8 +14,8 @@ enemy *e;
 block *b;
 bomb *bom;
 fire *f;
-GLubyte *playerImage[4][5], *enemyImage[4][2], *blockImage[2], *bombImage, *bombexplosionimage[7];
-GLubyte *playerDie[3], *enemyDie[3];
+GLubyte ***playerImage, ***enemyImage, **blockImage, *bombImage, **bombexplosionimage;
+GLubyte **playerDie, **enemyDie;
 Node* current;
 Node* prev = NULL;
 extern MapStruct map[15][20];
@@ -47,6 +47,20 @@ void glutInit()
 	for (int i = 0; i < 15; i++)
 		for (int j = 0; j < 20; j++)
 			map[i][j].nextNode = NULL;
+
+	/* 할당 */
+	playerImage = new GLubyte**[4];
+	for (int i = 0; i < 4; i++)
+		playerImage[i] = new GLubyte*[5];
+
+	enemyImage = new GLubyte**[4];
+	for (int i = 0; i < 4; i++)
+		enemyImage[i] = new GLubyte*[2];
+
+	blockImage = new GLubyte*[2];
+	bombexplosionimage = new GLubyte*[7];
+	playerDie = new GLubyte*[3];
+	enemyDie = new GLubyte*[3];
 
 	/* Player 이미지 로드 */
 	playerImage[0][0] = LoadBmp("Image/player/Right_1.bmp");

@@ -33,7 +33,7 @@ typedef struct Map
 float ConversionX(float x);
 float ConversionY(float y);
 GLubyte *LoadBmp(const char *path);				//비트맵이미지정보를 읽어줌
-void DrawFunc(GLubyte * image, int dx, int dy);	//비트맵이미지 그려줌
+void DrawFunc(GLubyte *image, int dx, int dy);	//비트맵이미지 그려줌
 void FourWayMoving(int wayValue, void *object, int *x, int *y, int type);				// 맵 배열상의 오브젝트 이동 처리 함수
 Node* CreateNode(int type, void *object);		//node구조체 생성그리고 node주소 리턴
 void RemoveNode(Node* node);					//node주소 해제

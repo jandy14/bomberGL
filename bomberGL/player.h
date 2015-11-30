@@ -8,7 +8,7 @@
 class player
 {
 private:
-	GLubyte *image[4][5], *die[3];
+	GLubyte ***image, **die;
 	int positionX, positionY;		//맵상에서의 좌표
 	int drawPositionX, drawPositionY;	//그림이 그려질 좌표
 	int speedCountMax, speedCount;	//객체의 속도
@@ -24,7 +24,7 @@ private:
 	bool isdying;		//true면 Die실행
 //	bool Check();		//move()에서 받은 입력값이 갈수 있는곳인지 확인(갈수 있으면 TRUE)??필요없나??ㅋ
 public:
-	player(int x, int y, GLubyte *image[4][5], GLubyte *die[3]);
+	player(int x, int y, GLubyte ***image, GLubyte **die);
 	void Move(int key);		//입력값을 받아서 움직임을 Moving()에 명령
 	void Draw();		//객체의 이미지를 그려줌
 	void Moving();		//move()에서 받은 명령을 시행(pixelx,y 설정)

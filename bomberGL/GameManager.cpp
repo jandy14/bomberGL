@@ -36,7 +36,7 @@ GLubyte *LoadBmp(const char *path)
 	return pRaster;
 }
 
-void DrawFunc(GLubyte * image, int dx, int dy)
+void DrawFunc(GLubyte *image, int dx, int dy)
 {
 	int x, y;
 	int count = 0;

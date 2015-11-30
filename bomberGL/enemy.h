@@ -8,7 +8,7 @@
 class enemy 
 {
 private:
-	GLubyte *image[4][2], *die[3];												// 이미지 저장 변수
+	GLubyte ***image, **die;												// 이미지 저장 변수
 	int speedCountMax, speedCount;												// Enemy 속도
 	int dyingCount;																// dying 카운트
 	int positionX, positionY;													// Enemy 배열 좌표값
@@ -22,7 +22,7 @@ private:
 	bool Check();																// movable 체크
 
 public:
-	enemy(int positionX, int positionY, GLubyte *image[4][2], GLubyte *die[3]);	// Enemy 소환
+	enemy(int positionX, int positionY, GLubyte ***image, GLubyte **die);		// Enemy 소환
 	~enemy();																	// Enemy 소멸
 	void Move();																// 입력값을 받아서 움직임을 Moving()에 명령
 	void Draw();																// 객체의 이미지를 그려줌

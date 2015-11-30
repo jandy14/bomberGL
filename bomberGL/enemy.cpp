@@ -1,6 +1,6 @@
 #include "enemy.h"
 
-enemy::enemy(int positionX, int positionY, GLubyte *image[4][2], GLubyte *die[3])
+enemy::enemy(int positionX, int positionY, GLubyte ***image, GLubyte **die)
 {
 	way = 1;
 
@@ -20,13 +20,8 @@ enemy::enemy(int positionX, int positionY, GLubyte *image[4][2], GLubyte *die[3]
 	this->positionY = positionY;
 
 	/* Enemy 이미지 로드 */
-	for (int i = 0; i < 4; i++)
-	{
-		this->image[i][0] = image[i][0];
-		this->image[i][1] = image[i][1];
-	}
-
-	for (int i = 0; i < 3; i++) this->die[i] = die[i];
+	this->image = image;
+	this->die = die;
 }
 
 enemy::~enemy()
@@ -117,9 +112,9 @@ void enemy::Move()
 			case DOWN:
 				down = true;
 				break;
-			case 7:
+			/*case 7:
 				isDying = true;
-				return;
+				return;*/
 			default:
 				return;
 			}

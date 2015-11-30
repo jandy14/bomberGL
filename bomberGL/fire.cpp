@@ -1,12 +1,10 @@
 #include "fire.h"
 
-
-
 fire::fire(GLubyte *image, int x, int y,int way)
 {
 	speedCount = 0;
 	speedCountMax = 5;
-	movecount = 4;
+	movecount = 1;
 
 	this->positionX = x;
 	this->positionY = y;
