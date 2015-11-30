@@ -85,7 +85,7 @@ void player::Moving()
 		if (speedCountMax / 2 == speedCount)
 		{
 			FourWayMoving(right + (up * 2) + (left * 3) + (down * 4), this, &positionX, &positionY, 1);
-			if (SearchNode(map[positionY][positionX].nextNode, 2))
+			if (SearchNode(map[positionY][positionX].nextNode, 2))//이동한 위치에 적이 있는지 확인 없으면 true
 				Killplayer();
 		}
 
@@ -124,7 +124,7 @@ void player :: Draw()
 
 void player::Putbomb(GLubyte * image, GLubyte **explosionimage)
 {
-	if (!SearchNode(map[positionY][positionX].nextNode, 21) && !isdying)
+	if (!SearchNode(map[positionY][positionX].nextNode, 21) && !isdying)//그자리에 폭탄이 있는지 확인 없으면 true
 	{
 		bomb *bom = new bomb(positionX, positionY, image, explosionimage);
 		AddNode(&(map[positionY][positionX].nextNode), CreateNode(21, bom));

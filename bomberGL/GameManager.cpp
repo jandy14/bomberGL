@@ -192,17 +192,17 @@ void PopNode(Node** Head, void* object)
 }
 
 /* ³ëµå Å½»ö */
-bool SearchNode(Node* head, int type)
+void * SearchNode(Node* head, int type)
 {
 	Node* current = head;
 
 	while (current != NULL)
 	{
-		if (current->type == type) return true;
+		if (current->type == type) return current->object;
 		current = current->nextNode;
 	}
 
-	return false;
+	return NULL;
 }
 
 
