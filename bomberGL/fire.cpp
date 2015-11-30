@@ -59,6 +59,7 @@ void fire::Moving()
 		if (speedCountMax / 2 == speedCount)
 		{
 			FourWayMoving(way, this, &positionX, &positionY, 31);
+			Destroyobject(positionX, positionY);
 			//Ä­¿¡ ÀÖ´Â°Å ÀüºÎ Á×ÀÓ
 			//º®µ¹ÀÌ¸é ºÎ½°
 		}
@@ -68,14 +69,50 @@ void fire::Moving()
 		{
 			speedCount = 0;
 			movecount--;
-			if (movecount == 0)
-			{
-				PopNode(&(map[positionY][positionX].nextNode), this);
-				delete this;
-			}
 		}
 
 		else speedCount++;
 
+		if (movecount == 0)
+		{
+			PopNode(&(map[positionY][positionX].nextNode), this);
+			delete this;
+		}
+
 	return;
+}
+
+void fire::Destroyobject(int x, int y)
+{
+	Node * currentNode = map[y][x].nextNode;
+	player * p;
+	enemy * e;
+	bomb * bom;
+		while (currentNode != NULL)
+		{
+			switch (currentNode->type)
+			{
+			case 1:
+				p = (player *)currentNode->object;
+				p->Killplayer();
+				break;
+			case 2:
+				e = (enemy *)currentNode->object;
+				e->Kill();
+				break;
+			case 11:
+				movecount = 0;
+				break;
+			case 12:
+				movecount = 0;
+				break;
+			case 21:
+				bom = (bomb *)currentNode->object;
+				bom->Explode();
+				break;
+			default:
+				break;
+			}
+			currentNode = currentNode->nextNode;
+		}
 }

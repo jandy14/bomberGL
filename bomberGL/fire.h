@@ -20,6 +20,7 @@ public:
 	~fire();
 	void Draw();
 	void Moving();
+	void Destroyobject(int x, int y);
 };
 
 
