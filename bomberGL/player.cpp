@@ -122,10 +122,14 @@ void player :: Draw()
 
 void player::Putbomb(GLubyte * image, GLubyte **explosionimage)
 {
-	if (!SearchNode(map[positionY][positionX].nextNode, 21) && !isdying)//그자리에 폭탄이 있는지 확인 없으면 true
+	if (nowbomb)
 	{
-		bomb *bom = new bomb(positionX, positionY, image, explosionimage);
-		AddNode(&(map[positionY][positionX].nextNode), CreateNode(21, bom));
+		nowbomb--;
+		if (!SearchNode(map[positionY][positionX].nextNode, 21) && !isdying)//그자리에 폭탄이 있는지 확인 없으면 true
+		{
+			bomb *bom = new bomb(this, positionX, positionY, image, explosionimage);
+			AddNode(&(map[positionY][positionX].nextNode), CreateNode(21, bom));
+		}
 	}
 }
 
@@ -146,4 +150,10 @@ void player::Die()
 void player::Kill()
 {
 	isdying = true;
+}
+
+void player::Getbomb()
+{
+	if (nowbomb < maxbomb)
+		nowbomb++;
 }

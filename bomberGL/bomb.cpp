@@ -1,7 +1,8 @@
 #include "bomb.h"
 
-bomb::bomb(int x, int y,GLubyte *image ,GLubyte **explosionimage)
+bomb::bomb(void * master, int x, int y, GLubyte *image, GLubyte **explosionimage)
 {
+	this->master = master;
 	positionX = x;
 	positionY = y;
 	drawPositionX = x * 60;
@@ -41,6 +42,7 @@ void bomb::Explosion()
 	if (count == 0 && !exploding)
 	{
 		exploding = true;
+		((player *)master)->Getbomb();
 		for (int i = 1; i <= 4; i++)
 		{
 			fire * f;

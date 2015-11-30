@@ -3,7 +3,6 @@
 #define __PLAYER_H__
 
 #include"GameManager.h"
-#include "bomb.h"
 
 class player
 {
@@ -16,7 +15,7 @@ private:
 	int temporaryValueX, temporaryValueY;	// Enemy 방향값
 	int way;			//가려는 방향값  0우 1좌 2상 3하
 	int maxbomb;		//최대가능 갯수
-	int nowbomb;		//현재 설치한 갯수
+	int nowbomb;		//현재 설치가능한 갯수
 	int power;			//폭탄의 화력
 	bool moving;		//움직이는 중인지 확인
 	bool movingmap;		//이동중에 맵상에서 옮겨졌는지 확인
@@ -31,7 +30,7 @@ public:
 	void Die();			//객체를 죽는 모션후에 죽임
 	void Kill();		//isDying을 트루로 만들어줌
 	void Putbomb(GLubyte * image,GLubyte **explosionimage);		//폭탄 설치(폭탄 클래스의 인스턴스 생성)
-//	void Getbomb();		//폭탄이 터지면 nowbomb의 값을 재조정해준다
+	void Getbomb();		//폭탄이 터지면 nowbomb의 값을 재조정해준다
 //	~player();
 };
 
