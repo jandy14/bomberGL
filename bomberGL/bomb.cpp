@@ -47,7 +47,7 @@ void bomb::Explosion()
 		for (int i = 1; i <= 4; i++)
 		{
 			fire * f;
-			f = new fire(explosionimage[0], positionX, positionY, i, power);
+			f = new fire(explosionimage[0], positionX, positionY, i, power, 31);
 			AddNode(&(map[positionY][positionX].nextNode), CreateNode(31, f));
 		}
 	}

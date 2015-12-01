@@ -73,8 +73,8 @@ void block::Attack(GLubyte **explosionImage)
 
 			for (int way = 1; way < 5; way++)
 			{
-				f = new fire(explosionImage[0], positionX, positionY, way, 5);
-				AddNode(&(map[positionY][positionX].nextNode), CreateNode(31, f));
+				f = new fire(explosionImage[0], positionX, positionY, way, 5, 32);
+				AddNode(&(map[positionY][positionX].nextNode), CreateNode(32, f));
 			}
 		}
 	}

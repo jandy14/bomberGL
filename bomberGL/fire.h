@@ -14,9 +14,10 @@ private:
 	int temporaryValueX, temporaryValueY;	//방향값에 따른 그거
 	int movecount;							//움직일수 있는 횟수
 	int way;								//방향값 1오른 2위 3왼 4아래
+	int type;								//불의 종류
 
 public:
-	fire(GLubyte *image, int x,int y,int way, int power);
+	fire(GLubyte *image, int x,int y,int way, int power, int type);
 	~fire();
 	void Draw();
 	void Moving();

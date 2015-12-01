@@ -1,6 +1,6 @@
 #include "fire.h"
 
-fire::fire(GLubyte *image, int x, int y,int way, int power)
+fire::fire(GLubyte *image, int x, int y,int way, int power, int type)
 {
 	speedCount = 0;
 	speedCountMax = 5;
@@ -13,6 +13,7 @@ fire::fire(GLubyte *image, int x, int y,int way, int power)
 	drawPositionY = 60 * (positionY + 1);
 
 	this->way = way;
+	this->type = type;
 
 	switch (way)
 	{
@@ -92,45 +93,48 @@ void fire::Destroyobject(int x, int y)
 	bomb *bom;
 	Item *i;
 
-	while (currentNode != NULL)
+	if (type == 31)
 	{
-		switch (currentNode->type)
+		while (currentNode != NULL)
 		{
-		case 1:
-			p = (player *)currentNode->object;
-			p->Kill();
-			break;
-		case 2:
-			e = (enemy *)currentNode->object;
-			e->Kill();
-			break;
-		case 11:
-			movecount = 0;
-			break;
-		case 12:
-			b = (block *)currentNode->object;
-			b->Break();
-			movecount = 0;
-			break;
-		case 21:
-			bom = (bomb *)currentNode->object;
-			bom->Explode();
-			break;
-		case 41: case 42: case 43:
-			i = (Item *)currentNode->object;
-			i->Destroy();
-
-			if (currentNode->object != i)
+			switch (currentNode->type)
 			{
-				if (prevNode != NULL) currentNode = prevNode->nextNode;
-				else if (prevNode == NULL) currentNode = map[y][x].nextNode;
-				continue;
+			case 1:
+				p = (player *)currentNode->object;
+				p->Kill();
+				break;
+			case 2:
+				e = (enemy *)currentNode->object;
+				e->Kill();
+				break;
+			case 11:
+				movecount = 0;
+				break;
+			case 12:
+				b = (block *)currentNode->object;
+				b->Break();
+				movecount = 0;
+				break;
+			case 21:
+				bom = (bomb *)currentNode->object;
+				bom->Explode();
+				break;
+			case 41: case 42: case 43:
+				i = (Item *)currentNode->object;
+				i->Destroy();
+
+				if (currentNode->object != i)
+				{
+					if (prevNode != NULL) currentNode = prevNode->nextNode;
+					else if (prevNode == NULL) currentNode = map[y][x].nextNode;
+					continue;
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-		default:
-			break;
+			prevNode = currentNode;
+			currentNode = currentNode->nextNode;
 		}
-		prevNode = currentNode;
-		currentNode = currentNode->nextNode;
 	}
 }
