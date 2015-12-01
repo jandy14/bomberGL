@@ -194,3 +194,12 @@ void player::Upgrade(int type)
 		break;
 	}
 }
+
+void player::shootbullet(GLubyte *image,int w)
+{
+	if (!isdying)
+	{
+		fire *f = new fire(image, positionX, positionY, w, 7, 33);
+		AddNode(&(map[positionY][positionX].nextNode), CreateNode(33, f));
+	}
+}

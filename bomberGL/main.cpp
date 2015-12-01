@@ -15,7 +15,7 @@ block *b;
 bomb *bom;
 fire *f;
 Item *i;
-GLubyte ***playerImage, ***enemyImage, **blockImage, *bombImage, **bombexplosionimage;
+GLubyte ***playerImage, ***enemyImage, **blockImage, *bombImage, **bombexplosionimage, **bulletImage;
 GLubyte **playerDie, **enemyDie, **blockDestroy;
 GLubyte **itemImage;
 Node* current;
@@ -65,6 +65,7 @@ void glutInit()
 	enemyDie = new GLubyte*[3];
 	blockDestroy = new GLubyte*[5];
 	itemImage = new GLubyte*[5];
+	bulletImage = new GLubyte*[4];
 
 	/* Player 이미지 로드 */
 	playerImage[0][0] = LoadBmp("Image/player/Right_1.bmp");
@@ -138,6 +139,12 @@ void glutInit()
 	itemImage[0] = LoadBmp("Image/Item/Item_IncreaseBombCount.bmp");
 	itemImage[1] = LoadBmp("Image/Item/Item_IncreaseFireRange.bmp");
 	itemImage[2] = LoadBmp("Image/Item/Item_RandomFireRange.bmp");
+
+	/* Bullet 이미지 로드*/
+	bulletImage[0] = LoadBmp("Image/Fire/BulletRight.bmp");//오른
+	bulletImage[1] = LoadBmp("Image/Fire/BulletUp.bmp");//위
+	bulletImage[2] = LoadBmp("Image/Fire/BulletLeft.bmp");//왼
+	bulletImage[3] = LoadBmp("Image/Fire/BulletDown.bmp");//아래
 
 	/* 객체 생성 및 배치 */
 	f.open("Info/mapinfo.txt");
@@ -215,7 +222,7 @@ void Dodisplay()
 					bom = (bomb *)current->object;
 					bom->Draw();
 					break;
-				case 31:
+				case 31: case 33:
 					f = (fire *)current->object;
 					f->Draw();
 					break;
@@ -245,6 +252,14 @@ void Dokeyboard(unsigned char value, int x, int y)
 {
 	if (value == 32)
 		p->Putbomb(bombImage, bombexplosionimage);
+	else if (value == 'd')
+		p->shootbullet(bulletImage[0], 1);
+	else if (value == 'w')
+		p->shootbullet(bulletImage[1], 2);
+	else if (value == 'a')
+		p->shootbullet(bulletImage[2], 3);
+	else if (value == 's')
+		p->shootbullet(bulletImage[3], 4);
 }
 
 void Update(int value)
@@ -315,7 +330,7 @@ void Update(int value)
 						continue;
 					}
 					break;
-				case 31:
+				case 31: case 33:
 					f = (fire *)current->object;
 					f->Moving();
 					if (current->object != f)

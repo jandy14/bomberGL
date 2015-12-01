@@ -3,7 +3,16 @@
 fire::fire(GLubyte *image, int x, int y,int way, int power, int type)
 {
 	speedCount = 0;
-	speedCountMax = 5;
+	switch (type)
+	{
+	case 31: 
+		Destroyobject(x, y);
+	case 32:
+		speedCountMax = 5;
+		break;
+	case 33:
+		speedCountMax = 3;
+	}
 	movecount = power;
 
 	this->positionX = x;
@@ -129,6 +138,36 @@ void fire::Destroyobject(int x, int y)
 					else if (prevNode == NULL) currentNode = map[y][x].nextNode;
 					continue;
 				}
+				break;
+			default:
+				break;
+			}
+			prevNode = currentNode;
+			currentNode = currentNode->nextNode;
+		}
+	}
+	if (type == 33)
+	{
+		while (currentNode != NULL)
+		{
+			switch (currentNode->type)
+			{
+			case 1:
+				p = (player *)currentNode->object;
+				p->Kill();
+				break;
+			case 2:
+				e = (enemy *)currentNode->object;
+				e->Kill();
+				break;
+			case 11: case 12: case 13:
+				movecount = 0;
+				break;
+			case 21:
+				bom = (bomb *)currentNode->object;
+				bom->Explode();
+				break;
+			case 41: case 42: case 43:
 				break;
 			default:
 				break;

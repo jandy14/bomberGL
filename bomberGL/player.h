@@ -31,6 +31,7 @@ public:
 	void Kill();		//isDying을 트루로 만들어줌
 	void Putbomb(GLubyte * image,GLubyte **explosionimage);		//폭탄 설치(폭탄 클래스의 인스턴스 생성)
 	void Getbomb();		//폭탄이 터지면 nowbomb의 값을 재조정해준다
+	void shootbullet(GLubyte *image,int way);
 	void Upgrade(int type); // 아이템 효과 적용
 //	~player();
 };
