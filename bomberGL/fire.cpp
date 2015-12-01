@@ -68,7 +68,7 @@ void fire::Moving()
 	/* 타일의 절반이상 넘어갔는지 체크 */
 	if (speedCountMax / 2 == speedCount)
 	{
-		FourWayMoving(way, this, &positionX, &positionY, 31);
+		FourWayMoving(way, this, &positionX, &positionY, type);
 		Destroyobject(positionX, positionY);
 		//칸에 있는거 전부 죽임
 		//벽돌이면 부쉼
@@ -99,6 +99,7 @@ void fire::Destroyobject(int x, int y)
 	player *p;
 	enemy *e;
 	block *b;
+	fire *f;
 	bomb *bom;
 	Item *i;
 
@@ -146,7 +147,8 @@ void fire::Destroyobject(int x, int y)
 			currentNode = currentNode->nextNode;
 		}
 	}
-	if (type == 33)
+
+	else if (type == 32)
 	{
 		while (currentNode != NULL)
 		{
@@ -156,6 +158,31 @@ void fire::Destroyobject(int x, int y)
 				p = (player *)currentNode->object;
 				p->Kill();
 				break;
+			case 11: case 12:
+				movecount = 0;
+				break;
+			case 21:
+				bom = (bomb *)currentNode->object;
+				bom->Explode();
+				break;
+			case 33:
+				f = (fire *)currentNode->object;
+				f->movecount = 0;
+				break;
+			default:
+				break;
+			}
+			prevNode = currentNode;
+			currentNode = currentNode->nextNode;
+		}
+	}
+
+	else if (type == 33)
+	{
+		while (currentNode != NULL)
+		{
+			switch (currentNode->type)
+			{
 			case 2:
 				e = (enemy *)currentNode->object;
 				e->Kill();
@@ -166,8 +193,6 @@ void fire::Destroyobject(int x, int y)
 			case 21:
 				bom = (bomb *)currentNode->object;
 				bom->Explode();
-				break;
-			case 41: case 42: case 43:
 				break;
 			default:
 				break;

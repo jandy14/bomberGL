@@ -15,7 +15,7 @@ block *b;
 bomb *bom;
 fire *f;
 Item *i;
-GLubyte ***playerImage, ***enemyImage, **blockImage, *bombImage, **bombexplosionimage, **bulletImage;
+GLubyte ***playerImage, ***enemyImage, **blockImage, *bombImage, **bombexplosionimage, **bulletImage, **blockExplosionImage;;
 GLubyte **playerDie, **enemyDie, **blockDestroy;
 GLubyte **itemImage;
 Node* current;
@@ -66,6 +66,7 @@ void glutInit()
 	blockDestroy = new GLubyte*[5];
 	itemImage = new GLubyte*[5];
 	bulletImage = new GLubyte*[4];
+	blockExplosionImage = new GLubyte*[2];
 
 	/* Player 이미지 로드 */
 	playerImage[0][0] = LoadBmp("Image/player/Right_1.bmp");
@@ -117,6 +118,9 @@ void glutInit()
 	/* Block 이미지 로드 */
 	blockImage[0] = LoadBmp("Image/Block/Brick1.bmp");
 	blockImage[1] = LoadBmp("Image/Block/Brick2.bmp");
+
+	/* Block Explosion 이미지 로드 */
+	blockExplosionImage[0] = LoadBmp("Image/Block/Block_Fire_1.bmp");
 
 	/* Block Break 이미지 로드 */
 	blockDestroy[0] = LoadBmp("Image/Block/Break_1.bmp");
@@ -222,7 +226,7 @@ void Dodisplay()
 					bom = (bomb *)current->object;
 					bom->Draw();
 					break;
-				case 31: case 33:
+				case 31: case 32: case 33:
 					f = (fire *)current->object;
 					f->Draw();
 					break;
@@ -317,7 +321,7 @@ void Update(int value)
 					break;
 				case 13:
 					b = (block *)current->object;
-					b->Attack(bombexplosionimage);
+					b->Attack(blockExplosionImage);
 					break;
 				case 21:
 					bom = (bomb *)current->object;
@@ -330,7 +334,7 @@ void Update(int value)
 						continue;
 					}
 					break;
-				case 31: case 33:
+				case 31: case 32: case 33:
 					f = (fire *)current->object;
 					f->Moving();
 					if (current->object != f)
