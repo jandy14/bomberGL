@@ -55,10 +55,22 @@ void block::Destroy()
 		if (breakCount == 4)
 		{
 			Item *i;
-			i = new Item(positionX, positionY, itemList[0]);
+			int randomNumber;
+			std::random_device rd;
+			std::mt19937_64 rng(rd());
+			std::uniform_int_distribution<__int64> range(0, 5);
+
+			switch (randomNumber = range(rng))
+			{
+			case 0: case 1: case 2:
+				i = new Item(positionX, positionY, itemList[randomNumber]);
+				AddNode(&(map[positionY][positionX].nextNode), CreateNode(41 + randomNumber, i));
+				break;
+			default:
+				break;
+			}
+
 			PopNode(&(map[positionY][positionX].nextNode), this);
-			AddNode(&(map[positionY][positionX].nextNode), CreateNode(41, i));
-			
 			delete this;
 		}
 

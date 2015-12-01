@@ -7,14 +7,15 @@
 class bomb
 {
 	GLubyte *image, **explosionimage;				// 이미지 저장 변수
-	void * master;								// 폭탄의 주인 주소값
+	void * master;									// 폭탄의 주인 주소값
 	int positionX, positionY;						// Bomb의 맵상 좌표값
 	int drawPositionX, drawPositionY;				// Draw 시작 좌표값
 	int count;										// 폭탄이 터지기까지 남은 프레임
 	int explosioncount;								// 폭탄이 터지고 지난 횟수
+	int power;										// 폭탄의 범위
 	bool exploding;									// 폭탄이 터지기 시작하는지 확인
 public:
-	bomb(void * master,int x,int y,GLubyte *image,GLubyte **explosionimage);
+	bomb(void * master,int x,int y,GLubyte *image,GLubyte **explosionimage, int power);
 	void Draw();
 	void Countdown();
 	void Explosion();								//폭발조건이 성립하면 돌아가는 함수

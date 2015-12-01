@@ -16,7 +16,7 @@ private:
 	int way;								//방향값 1오른 2위 3왼 4아래
 
 public:
-	fire(GLubyte *image, int x,int y,int way);
+	fire(GLubyte *image, int x,int y,int way, int power);
 	~fire();
 	void Draw();
 	void Moving();

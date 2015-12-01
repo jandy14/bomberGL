@@ -1,10 +1,10 @@
 #include "fire.h"
 
-fire::fire(GLubyte *image, int x, int y,int way)
+fire::fire(GLubyte *image, int x, int y,int way, int power)
 {
 	speedCount = 0;
 	speedCountMax = 5;
-	movecount = 1;
+	movecount = power;
 
 	this->positionX = x;
 	this->positionY = y;
@@ -51,71 +51,86 @@ void fire::Draw()
 
 void fire::Moving()
 {
-		/* 상하좌우 움직임 명령 */
-		drawPositionX += (60 / speedCountMax) * temporaryValueX;
-		drawPositionY += (60 / speedCountMax) * temporaryValueY;
+	/* 상하좌우 움직임 명령 */
+	drawPositionX += (60 / speedCountMax) * temporaryValueX;
+	drawPositionY += (60 / speedCountMax) * temporaryValueY;
 
-		/* 타일의 절반이상 넘어갔는지 체크 */
-		if (speedCountMax / 2 == speedCount)
-		{
-			FourWayMoving(way, this, &positionX, &positionY, 31);
-			Destroyobject(positionX, positionY);
-			//칸에 있는거 전부 죽임
-			//벽돌이면 부쉼
-		}
+	/* 타일의 절반이상 넘어갔는지 체크 */
+	if (speedCountMax / 2 == speedCount)
+	{
+		FourWayMoving(way, this, &positionX, &positionY, 31);
+		Destroyobject(positionX, positionY);
+		//칸에 있는거 전부 죽임
+		//벽돌이면 부쉼
+	}
 
-		/* 타일을 완전히 다 넘어왔는지 체크 */
-		if (speedCountMax - 1 == speedCount)
-		{
-			speedCount = 0;
-			movecount--;
-		}
+	/* 타일을 완전히 다 넘어왔는지 체크 */
+	if (speedCountMax - 1 == speedCount)
+	{
+		speedCount = 0;
+		movecount--;
+	}
 
-		else speedCount++;
+	else speedCount++;
 
-		if (movecount == 0)
-		{
-			PopNode(&(map[positionY][positionX].nextNode), this);
-			delete this;
-		}
+	if (movecount == 0)
+	{
+		PopNode(&(map[positionY][positionX].nextNode), this);
+		delete this;
+	}
 
 	return;
 }
 
 void fire::Destroyobject(int x, int y)
 {
-	Node * currentNode = map[y][x].nextNode;
-	player * p;
-	enemy * e;
+	Node *currentNode = map[y][x].nextNode;
+	Node *prevNode = NULL;
+	player *p;
+	enemy *e;
 	block *b;
-	bomb * bom;
-		while (currentNode != NULL)
+	bomb *bom;
+	Item *i;
+
+	while (currentNode != NULL)
+	{
+		switch (currentNode->type)
 		{
-			switch (currentNode->type)
+		case 1:
+			p = (player *)currentNode->object;
+			p->Kill();
+			break;
+		case 2:
+			e = (enemy *)currentNode->object;
+			e->Kill();
+			break;
+		case 11:
+			movecount = 0;
+			break;
+		case 12:
+			b = (block *)currentNode->object;
+			b->Break();
+			movecount = 0;
+			break;
+		case 21:
+			bom = (bomb *)currentNode->object;
+			bom->Explode();
+			break;
+		case 41: case 42:
+			i = (Item *)currentNode->object;
+			i->Destroy();
+
+			if (currentNode->object != i)
 			{
-			case 1:
-				p = (player *)currentNode->object;
-				p->Kill();
-				break;
-			case 2:
-				e = (enemy *)currentNode->object;
-				e->Kill();
-				break;
-			case 11:
-				movecount = 0;
-				break;
-			case 12:
-				b = (block *)currentNode->object;
-				b->Break();
-				movecount = 0;
-				break;
-			case 21:
-				bom = (bomb *)currentNode->object;
-				bom->Explode();
-				break;
-			default:
-				break;
+				if (prevNode != NULL) currentNode = prevNode->nextNode;
+				else if (prevNode == NULL) currentNode = map[y][x].nextNode;
+				continue;
 			}
-			currentNode = currentNode->nextNode;
+			break;
+		default:
+			break;
 		}
+		prevNode = currentNode;
+		currentNode = currentNode->nextNode;
+	}
 }

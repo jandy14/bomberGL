@@ -64,7 +64,7 @@ void glutInit()
 	playerDie = new GLubyte*[3];
 	enemyDie = new GLubyte*[3];
 	blockDestroy = new GLubyte*[5];
-	itemImage = new GLubyte*[2];
+	itemImage = new GLubyte*[5];
 
 	/* Player 이미지 로드 */
 	playerImage[0][0] = LoadBmp("Image/player/Right_1.bmp");
@@ -136,6 +136,8 @@ void glutInit()
 
 	/* Item 이미지 로드 */
 	itemImage[0] = LoadBmp("Image/Item/Item_IncreaseBombCount.bmp");
+	itemImage[1] = LoadBmp("Image/Item/Item_IncreaseFireRange.bmp");
+	itemImage[2] = LoadBmp("Image/Item/Item_RandomFireRange.bmp");
 
 	/* 객체 생성 및 배치 */
 	f.open("Info/mapinfo.txt");
@@ -212,7 +214,7 @@ void Dodisplay()
 					f = (fire *)current->object;
 					f->Draw();
 					break;
-				case 41:
+				case 41: case 42: case 43:
 					i = (Item *)current->object;
 					i->Draw();
 				default:
@@ -224,13 +226,14 @@ void Dodisplay()
 			}
 		}
 	}
+
 	glutSwapBuffers();
 }
 
 void Dospecial(int key, int x, int y)
 {
 	p->Move(key);
-//	player.move();식으로 key값으로 방향만 받아준다
+	//	player.move();식으로 key값으로 방향만 받아준다
 }
 
 void Dokeyboard(unsigned char value, int x, int y)
@@ -274,12 +277,12 @@ void Update(int value)
 
 					if (current->object != e)
 					{
-						if(prev != NULL) current = prev->nextNode;
+						if (prev != NULL) current = prev->nextNode;
 						else if (prev == NULL) current = map[x][y].nextNode;
 						continue;
 					}
 					break;
-				case 11: 
+				case 11:
 					break;
 				case 12:
 					b = (block *)current->object;
@@ -313,7 +316,7 @@ void Update(int value)
 						continue;
 					}
 					break;
-				case 41:
+				case 41: case 42: case 43:
 					i = (Item *)current->object;
 					i->Moving();
 

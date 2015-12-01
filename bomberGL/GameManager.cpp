@@ -184,7 +184,7 @@ void PopNode(Node** Head, void* object)
 		prevNode->object = NULL;
 		prevNode->nextNode = NULL;
 
-		return;	
+		return;
 	}
 
 	RemoveNode(currentNode);

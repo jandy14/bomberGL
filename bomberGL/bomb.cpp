@@ -1,6 +1,6 @@
 #include "bomb.h"
 
-bomb::bomb(void * master, int x, int y, GLubyte *image, GLubyte **explosionimage)
+bomb::bomb(void * master, int x, int y, GLubyte *image, GLubyte **explosionimage, int power)
 {
 	this->master = master;
 	positionX = x;
@@ -10,6 +10,7 @@ bomb::bomb(void * master, int x, int y, GLubyte *image, GLubyte **explosionimage
 	count = 60;
 	exploding = false;
 	explosioncount = 0;
+	this->power = power;
 
 	this->image = image;
 	this->explosionimage = explosionimage;
@@ -46,7 +47,7 @@ void bomb::Explosion()
 		for (int i = 1; i <= 4; i++)
 		{
 			fire * f;
-			f = new fire(explosionimage[0], positionX, positionY, i);
+			f = new fire(explosionimage[0], positionX, positionY, i, power);
 			AddNode(&(map[positionY][positionX].nextNode), CreateNode(31, f));
 		}
 	}

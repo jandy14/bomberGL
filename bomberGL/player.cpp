@@ -93,10 +93,13 @@ void player::Moving()
 			if (SearchNode(map[positionY][positionX].nextNode, 2))//이동한 위치에 적이 있는지 확인 없으면 true
 				Kill();
 
-			if (i = (Item *)SearchNode(map[positionY][positionX].nextNode, 41))
+			for (int x = 0; x < 3; x++)
 			{
-				i->Destroy();
-				Upgrade(41);
+				if (i = (Item *)SearchNode(map[positionY][positionX].nextNode, 41 + x))
+				{
+					i->Destroy();
+					Upgrade(41 + x);
+				}
 			}
 		}
 
@@ -114,10 +117,10 @@ void player::Moving()
 
 	return;
 }
-void player :: Draw()
+void player::Draw()
 {
 	if (isdying)
-		DrawFunc(die[dyingcount%3], drawPositionX, drawPositionY);
+		DrawFunc(die[dyingcount % 3], drawPositionX, drawPositionY);
 	else
 	{
 		if (moving)
@@ -135,12 +138,12 @@ void player :: Draw()
 
 void player::Putbomb(GLubyte * image, GLubyte **explosionimage)
 {
-	if (nowbomb)
+	if (!isdying && nowbomb)
 	{
 		nowbomb--;
 		if (!SearchNode(map[positionY][positionX].nextNode, 21) && !isdying)//그자리에 폭탄이 있는지 확인 없으면 true
 		{
-			bomb *bom = new bomb(this, positionX, positionY, image, explosionimage);
+			bomb *bom = new bomb(this, positionX, positionY, image, explosionimage, power);
 			AddNode(&(map[positionY][positionX].nextNode), CreateNode(21, bom));
 		}
 	}
@@ -178,6 +181,16 @@ void player::Upgrade(int type)
 	case 41:
 		maxbomb++;
 		nowbomb++;
+		break;
+	case 42:
+		if (power < 7) power++;
+		break;
+	case 43:
+		std::random_device rd;
+		std::mt19937_64 rng(rd());
+		std::uniform_int_distribution<__int64> range(1, 7);
+
+		power = range(rng);
 		break;
 	}
 }
