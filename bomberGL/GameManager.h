@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fstream>
+#include <cmath>
 
 #define SIZE 60
 #define WIDTH 1200

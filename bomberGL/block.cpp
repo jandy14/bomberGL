@@ -5,11 +5,12 @@ block::block(int x, int y, GLubyte *image, GLubyte **destroy, GLubyte **itemList
 	speedCount = 0;
 	speedCountMax = 12;
 
-	breakCount = 0;
+	breakCount = attackCount = 0;
 
 	temporaryValueX = temporaryValueY = 0;
 	right = left = up = down = false;
 	isBreaking = moving = false;
+	isShooting = attack = false;
 
 	this->positionX = x;
 	this->positionY = y;
@@ -35,6 +36,19 @@ void block::Draw()
 
 bool block::Check()
 {
+	for (int i = 0; i < 15; i++)
+	{
+		for (int j = 0; j < 20; j++)
+		{
+			if (SearchNode(map[i][j].nextNode, 1))
+			{
+				if ((abs(positionX - j) <= 4 && abs(positionY - i <= 1))
+					|| (abs(positionX - j) <= 1 && abs(positionY - i <= 4)))
+					return true;
+			}
+		}
+	}
+
 	return false;
 }
 
@@ -46,6 +60,32 @@ void block::Moving()
 void block::Move()
 {
 
+}
+
+void block::Attack(GLubyte **explosionImage)
+{
+	if (!attack && isShooting)
+	{
+		if (Check())
+		{
+			attack = true;
+			fire *f;
+
+			for (int way = 1; way < 5; way++)
+			{
+				f = new fire(explosionImage[0], positionX, positionY, way, 5);
+				AddNode(&(map[positionY][positionX].nextNode), CreateNode(31, f));
+			}
+		}
+	}
+
+	if (attackCount == 50)
+	{
+		attack = false;
+		attackCount = 0;
+	}
+
+	if (attack) attackCount++;
 }
 
 void block::Destroy()
@@ -81,4 +121,9 @@ void block::Destroy()
 void block::Break()
 {
 	isBreaking = true;
+}
+
+void block::setShooting()
+{
+	isShooting = true;
 }

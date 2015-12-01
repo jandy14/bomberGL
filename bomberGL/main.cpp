@@ -161,12 +161,13 @@ void glutInit()
 				e = new enemy(j, i, enemyImage, enemyDie);
 				AddNode(&(map[i][j].nextNode), CreateNode(objectType, e));
 				break;
-			case 11: case 13:
-				b = new block(j, i, blockImage[0], blockDestroy, itemImage);
+			case 11: case 12:
+				b = new block(j, i, blockImage[objectType % 11], blockDestroy, itemImage);
 				AddNode(&(map[i][j].nextNode), CreateNode(objectType, b));
 				break;
-			case 12:
-				b = new block(j, i, blockImage[1], blockDestroy, itemImage);
+			case 13:
+				b = new block(j, i, blockImage[0], blockDestroy, itemImage);
+				b->setShooting();
 				AddNode(&(map[i][j].nextNode), CreateNode(objectType, b));
 				break;
 			default:
@@ -286,7 +287,7 @@ void Update(int value)
 						continue;
 					}
 					break;
-				case 11: case 13:
+				case 11:
 					break;
 				case 12:
 					b = (block *)current->object;
@@ -298,6 +299,10 @@ void Update(int value)
 						else if (prev == NULL) current = map[x][y].nextNode;
 						continue;
 					}
+					break;
+				case 13:
+					b = (block *)current->object;
+					b->Attack(bombexplosionimage);
 					break;
 				case 21:
 					bom = (bomb *)current->object;
