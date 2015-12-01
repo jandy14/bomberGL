@@ -116,7 +116,7 @@ void fire::Destroyobject(int x, int y)
 			bom = (bomb *)currentNode->object;
 			bom->Explode();
 			break;
-		case 41: case 42:
+		case 41: case 42: case 43:
 			i = (Item *)currentNode->object;
 			i->Destroy();
 

@@ -37,6 +37,7 @@ bool enemy::Check()
 		{
 			if (!SearchNode(map[positionY][positionX + 1].nextNode, 11) 
 				&& !SearchNode(map[positionY][positionX + 1].nextNode, 12) 
+				&& !SearchNode(map[positionY][positionX + 1].nextNode, 13)
 				&& !SearchNode(map[positionY][positionX + 1].nextNode, 21))
 			{
 				temporaryValueX = 1;
@@ -51,6 +52,7 @@ bool enemy::Check()
 		{
 			if (!SearchNode(map[positionY][positionX - 1].nextNode, 11) 
 				&& !SearchNode(map[positionY][positionX - 1].nextNode, 12) 
+				&& !SearchNode(map[positionY][positionX - 1].nextNode, 13)
 				&& !SearchNode(map[positionY][positionX - 1].nextNode, 21))
 			{
 				temporaryValueX = -1;
@@ -65,6 +67,7 @@ bool enemy::Check()
 		{
 			if (!SearchNode(map[positionY - 1][positionX].nextNode, 11) 
 				&& !SearchNode(map[positionY - 1][positionX].nextNode, 12) 
+				&& !SearchNode(map[positionY - 1][positionX].nextNode, 13)
 				&& !SearchNode(map[positionY - 1][positionX].nextNode, 21))
 			{
 				temporaryValueY = -1;
@@ -79,6 +82,7 @@ bool enemy::Check()
 		{
 			if (!SearchNode(map[positionY + 1][positionX].nextNode, 11) 
 				&& !SearchNode(map[positionY + 1][positionX].nextNode, 12) 
+				&& !SearchNode(map[positionY + 1][positionX].nextNode, 13)
 				&& !SearchNode(map[positionY + 1][positionX].nextNode, 21))
 			{
 				temporaryValueY = 1;

@@ -161,8 +161,12 @@ void glutInit()
 				e = new enemy(j, i, enemyImage, enemyDie);
 				AddNode(&(map[i][j].nextNode), CreateNode(objectType, e));
 				break;
-			case 11: case 12:
-				b = new block(j, i, blockImage[objectType % 11], blockDestroy, itemImage);
+			case 11: case 13:
+				b = new block(j, i, blockImage[0], blockDestroy, itemImage);
+				AddNode(&(map[i][j].nextNode), CreateNode(objectType, b));
+				break;
+			case 12:
+				b = new block(j, i, blockImage[1], blockDestroy, itemImage);
 				AddNode(&(map[i][j].nextNode), CreateNode(objectType, b));
 				break;
 			default:
@@ -202,7 +206,7 @@ void Dodisplay()
 					e = (enemy *)current->object;
 					e->Draw();
 					break;
-				case 11: case 12:
+				case 11: case 12: case 13:
 					b = (block *)current->object;
 					b->Draw();
 					break;
@@ -282,7 +286,7 @@ void Update(int value)
 						continue;
 					}
 					break;
-				case 11:
+				case 11: case 13:
 					break;
 				case 12:
 					b = (block *)current->object;
