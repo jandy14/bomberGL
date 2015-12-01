@@ -262,7 +262,7 @@ void Update(int value)
 					if (current->object != p)
 					{
 						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = NULL;
+						else if (prev == NULL) current = map[x][y].nextNode;
 						continue;
 					}
 					break;
@@ -275,7 +275,7 @@ void Update(int value)
 					if (current->object != e)
 					{
 						if(prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = NULL;
+						else if (prev == NULL) current = map[x][y].nextNode;
 						continue;
 					}
 					break;
@@ -288,7 +288,7 @@ void Update(int value)
 					if (current->object != b)
 					{
 						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = NULL;
+						else if (prev == NULL) current = map[x][y].nextNode;
 						continue;
 					}
 					break;
@@ -299,7 +299,7 @@ void Update(int value)
 					if (current->object != bom)
 					{
 						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = NULL;
+						else if (prev == NULL) current = map[x][y].nextNode;
 						continue;
 					}
 					break;
@@ -309,7 +309,7 @@ void Update(int value)
 					if (current->object != f)
 					{
 						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = NULL;
+						else if (prev == NULL) current = map[x][y].nextNode;
 						continue;
 					}
 					break;
@@ -320,7 +320,7 @@ void Update(int value)
 					if (current->object != i)
 					{
 						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = NULL;
+						else if (prev == NULL) current = map[x][y].nextNode;
 						continue;
 					}
 				default:
