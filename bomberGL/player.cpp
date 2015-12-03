@@ -30,8 +30,10 @@ void player::Move(int key)
 		{
 		case GLUT_KEY_RIGHT:
 			way = 0;
-			if (map[positionY][positionX + 1].nextNode->type <= 10
-				|| map[positionY][positionX + 1].nextNode->type > 40)
+			if (!SearchNode(map[positionY][positionX + 1].nextNode, 11)
+				&& !SearchNode(map[positionY][positionX + 1].nextNode, 12)
+				&& !SearchNode(map[positionY][positionX + 1].nextNode, 13)
+				&& !SearchNode(map[positionY][positionX + 1].nextNode, 21))
 			{
 				right = true;
 				temporaryValueX = 1;
@@ -42,8 +44,10 @@ void player::Move(int key)
 			break;
 		case GLUT_KEY_LEFT:
 			way = 1;
-			if (map[positionY][positionX - 1].nextNode->type <= 10 
-				|| map[positionY][positionX - 1].nextNode->type > 40)
+			if (!SearchNode(map[positionY][positionX - 1].nextNode, 11)
+				&& !SearchNode(map[positionY][positionX - 1].nextNode, 12)
+				&& !SearchNode(map[positionY][positionX - 1].nextNode, 13)
+				&& !SearchNode(map[positionY][positionX - 1].nextNode, 21))
 			{
 				left = true;
 				temporaryValueX = -1;
@@ -53,8 +57,10 @@ void player::Move(int key)
 			break;
 		case GLUT_KEY_UP:
 			way = 2;
-			if (map[positionY - 1][positionX].nextNode->type <= 10 
-				|| map[positionY - 1][positionX].nextNode->type > 40)
+			if (!SearchNode(map[positionY - 1][positionX].nextNode, 11)
+				&& !SearchNode(map[positionY - 1][positionX].nextNode, 12)
+				&& !SearchNode(map[positionY - 1][positionX].nextNode, 13)
+				&& !SearchNode(map[positionY - 1][positionX].nextNode, 21))
 			{
 				up = true;
 				temporaryValueY = -1;
@@ -64,8 +70,10 @@ void player::Move(int key)
 			break;
 		case GLUT_KEY_DOWN:
 			way = 3;
-			if (map[positionY + 1][positionX].nextNode->type <= 10 
-				|| map[positionY + 1][positionX].nextNode->type > 40)
+			if (!SearchNode(map[positionY + 1][positionX].nextNode, 11)
+				&& !SearchNode(map[positionY + 1][positionX].nextNode, 12)
+				&& !SearchNode(map[positionY + 1][positionX].nextNode, 13)
+				&& !SearchNode(map[positionY + 1][positionX].nextNode, 21))
 			{
 				down = true;
 				temporaryValueY = 1;
