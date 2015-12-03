@@ -211,3 +211,8 @@ void player::shootbullet(GLubyte *image,int w)
 		AddNode(&(map[positionY][positionX].nextNode), CreateNode(33, f));
 	}
 }
+
+int player::getDyingCount()
+{
+	return dyingcount;
+}

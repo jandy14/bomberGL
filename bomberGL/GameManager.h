@@ -41,6 +41,7 @@ void RemoveNode(Node* node);					//node주소 해제
 void AddNode(Node** Head, Node* newNode);		//노드추가
 void PopNode(Node** Head, void* object);		//object값이 들어있는 노드삭제
 void * SearchNode(Node* Head, int type);		//object값이 들어있는 노드의 주소값리턴
+void DrawIntro(GLubyte *image);
 
 #include "player.h"
 #include "enemy.h"

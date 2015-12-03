@@ -32,6 +32,14 @@ GLubyte *LoadBmp(const char *path)
 	pRaster = new GLubyte[len];
 	memcpy(pRaster, (BYTE *)fh + fh->bfOffBits, len);
 
+	for (BYTE *p = pRaster; p < pRaster + len - 3; p += 3)
+	{
+		BYTE b = *p;
+		*p = *(p + 2);
+		*(p + 2) = b;
+	}
+
+
 	free(fh);
 	return pRaster;
 }
@@ -50,7 +58,7 @@ void DrawFunc(GLubyte *image, int dx, int dy)
 		{
 			glBegin(GL_POINTS);
 			{
-				glColor3ub(image[pixelindex + 2], image[pixelindex + 1], image[pixelindex]);
+				glColor3ub(image[pixelindex], image[pixelindex + 1], image[pixelindex + 2]);
 				glVertex2f(ConversionX(x), ConversionY(y));
 			}
 			glEnd();
@@ -205,9 +213,14 @@ void * SearchNode(Node* head, int type)
 	return NULL;
 }
 
-
 /* ³ëµå ¼Ò¸ê */
 void RemoveNode(Node* node)
 {
 	free(node);
+}
+
+void DrawIntro(GLubyte *image)
+{
+	glRasterPos2f(ConversionX(0), ConversionY(0));
+	glDrawPixels(WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, image);
 }

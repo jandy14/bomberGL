@@ -33,6 +33,7 @@ public:
 	void Getbomb();		//폭탄이 터지면 nowbomb의 값을 재조정해준다
 	void shootbullet(GLubyte *image,int way);
 	void Upgrade(int type); // 아이템 효과 적용
+	int getDyingCount();
 //	~player();
 };
 
