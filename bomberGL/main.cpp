@@ -233,10 +233,96 @@ void glutInit()
 
 void reStart()
 {
+	/* 동적 객체 해제 */
+	for (int x = 0; x < 15; x++)
+	{
+		for (int y = 0; y < 20; y++)
+		{
+			prev = NULL;
+			current = map[x][y].nextNode;
+			while (current != NULL)
+			{
+				switch (current->type)
+				{
+				case 1:
+					p = (player *)current->object;
+					delete p;
+
+					if (current->object != p)
+					{
+						if (prev != NULL) current = prev->nextNode;
+						else if (prev == NULL) current = map[x][y].nextNode;
+						continue;
+					}
+					break;
+				case 2:
+					e = (enemy *)current->object;
+					delete e;
+
+					if (current->object != e)
+					{
+						if (prev != NULL) current = prev->nextNode;
+						else if (prev == NULL) current = map[x][y].nextNode;
+						continue;
+					}
+					break;
+				case 11: case 12: case 13:
+					b = (block *)current->object;
+					delete b;
+
+					if (current->object != b)
+					{
+						if (prev != NULL) current = prev->nextNode;
+						else if (prev == NULL) current = map[x][y].nextNode;
+						continue;
+					}
+					break;
+				case 21:
+					bom = (bomb *)current->object;
+					delete bom;
+
+					if (current->object != bom)
+					{
+						if (prev != NULL) current = prev->nextNode;
+						else if (prev == NULL) current = map[x][y].nextNode;
+						continue;
+					}
+					break;
+				case 31: case 32: case 33:
+					f = (fire *)current->object;
+					delete f;
+					if (current->object != f)
+					{
+						if (prev != NULL) current = prev->nextNode;
+						else if (prev == NULL) current = map[x][y].nextNode;
+						continue;
+					}
+					break;
+				case 41: case 42: case 43:
+					i = (Item *)current->object;
+					delete i;
+
+					if (current->object != i)
+					{
+						if (prev != NULL) current = prev->nextNode;
+						else if (prev == NULL) current = map[x][y].nextNode;
+						continue;
+					}
+				default:
+					break;
+				}
+
+				prev = current;
+				current = current->nextNode;
+			}
+		}
+	}
+
 	/* 맵 배열 초기화 */
 	for (int i = 0; i < 15; i++)
 		for (int j = 0; j < 20; j++)
 			map[i][j].nextNode = NULL;
+	gameOver = false;
 
 	/* 객체 생성 및 배치 */
 	int objectType;
