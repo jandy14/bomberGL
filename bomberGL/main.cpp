@@ -247,67 +247,26 @@ void reStart()
 				case 1:
 					p = (player *)current->object;
 					delete p;
-
-					if (current->object != p)
-					{
-						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = map[x][y].nextNode;
-						continue;
-					}
 					break;
 				case 2:
 					e = (enemy *)current->object;
 					delete e;
-
-					if (current->object != e)
-					{
-						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = map[x][y].nextNode;
-						continue;
-					}
 					break;
 				case 11: case 12: case 13:
 					b = (block *)current->object;
 					delete b;
-
-					if (current->object != b)
-					{
-						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = map[x][y].nextNode;
-						continue;
-					}
 					break;
 				case 21:
 					bom = (bomb *)current->object;
 					delete bom;
-
-					if (current->object != bom)
-					{
-						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = map[x][y].nextNode;
-						continue;
-					}
 					break;
 				case 31: case 32: case 33:
 					f = (fire *)current->object;
 					delete f;
-					if (current->object != f)
-					{
-						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = map[x][y].nextNode;
-						continue;
-					}
 					break;
 				case 41: case 42: case 43:
 					i = (Item *)current->object;
 					delete i;
-
-					if (current->object != i)
-					{
-						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = map[x][y].nextNode;
-						continue;
-					}
 				default:
 					break;
 				}
@@ -384,8 +343,6 @@ void Dodisplay()
 		glRasterPos2f(-1, -1);
 		glDrawPixels(WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, gameIntro[gameStart]);
 		Sleep(80);
-
-		gameStart++;
 	}
 
 	else if (gameStart >= 29 && !isPlaying)
@@ -393,8 +350,6 @@ void Dodisplay()
 		glRasterPos2f(-1, -1);
 		glDrawPixels(WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, mainScene[(gameStart - 1) % 2]);
 		Sleep(500);
-
-		gameStart++;
 	}
 
 	else
@@ -476,99 +431,102 @@ void Update(int value)
 	glutTimerFunc(30, Update, 1);
 	//각 객체마다 갱신해줘야 하는 내용이 들어간다.
 	//s_map구조체안을 다 둘러보면서 갱신해줄지도 모르겠다.	
-	for (int x = 0; x < 15; x++)
+	if (isPlaying)
 	{
-		for (int y = 0; y < 20; y++)
+		for (int x = 0; x < 15; x++)
 		{
-			prev = NULL;
-			current = map[x][y].nextNode;
-			while (current != NULL)
+			for (int y = 0; y < 20; y++)
 			{
-				switch (current->type)
+				prev = NULL;
+				current = map[x][y].nextNode;
+				while (current != NULL)
 				{
-				case 1:
-					p = (player *)current->object;
-					p->Die();
-					p->Moving();
-					playerDyingCount = p->getDyingCount();
+					switch (current->type)
+					{
+					case 1:
+						p = (player *)current->object;
+						p->Die();
+						p->Moving();
+						playerDyingCount = p->getDyingCount();
 
-					if (current->object != p)
-					{
-						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = map[x][y].nextNode;
-						continue;
-					}
-					break;
-				case 2:
-					e = (enemy *)current->object;
-					e->Die();
-					e->Move();
-					e->Moving();
+						if (current->object != p)
+						{
+							if (prev != NULL) current = prev->nextNode;
+							else if (prev == NULL) current = map[x][y].nextNode;
+							continue;
+						}
+						break;
+					case 2:
+						e = (enemy *)current->object;
+						e->Die();
+						e->Move();
+						e->Moving();
 
-					if (current->object != e)
-					{
-						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = map[x][y].nextNode;
-						continue;
-					}
-					break;
-				case 11:
-					break;
-				case 12:
-					b = (block *)current->object;
-					b->Destroy();
+						if (current->object != e)
+						{
+							if (prev != NULL) current = prev->nextNode;
+							else if (prev == NULL) current = map[x][y].nextNode;
+							continue;
+						}
+						break;
+					case 12:
+						b = (block *)current->object;
+						b->Destroy();
 
-					if (current->object != b)
-					{
-						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = map[x][y].nextNode;
-						continue;
-					}
-					break;
-				case 13:
-					b = (block *)current->object;
-					b->Attack(blockExplosionImage);
-					break;
-				case 21:
-					bom = (bomb *)current->object;
-					bom->Countdown();
-					bom->Explosion();
-					if (current->object != bom)
-					{
-						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = map[x][y].nextNode;
-						continue;
-					}
-					break;
-				case 31: case 32: case 33:
-					f = (fire *)current->object;
-					f->Moving();
-					if (current->object != f)
-					{
-						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = map[x][y].nextNode;
-						continue;
-					}
-					break;
-				case 41: case 42: case 43:
-					i = (Item *)current->object;
-					i->Moving();
+						if (current->object != b)
+						{
+							if (prev != NULL) current = prev->nextNode;
+							else if (prev == NULL) current = map[x][y].nextNode;
+							continue;
+						}
+						break;
+					case 13:
+						b = (block *)current->object;
+						b->Attack(blockExplosionImage);
+						break;
+					case 21:
+						bom = (bomb *)current->object;
+						bom->Countdown();
+						bom->Explosion();
+						if (current->object != bom)
+						{
+							if (prev != NULL) current = prev->nextNode;
+							else if (prev == NULL) current = map[x][y].nextNode;
+							continue;
+						}
+						break;
+					case 31: case 32: case 33:
+						f = (fire *)current->object;
+						f->Moving();
+						if (current->object != f)
+						{
+							if (prev != NULL) current = prev->nextNode;
+							else if (prev == NULL) current = map[x][y].nextNode;
+							continue;
+						}
+						break;
+					case 41: case 42: case 43:
+						i = (Item *)current->object;
+						i->Moving();
 
-					if (current->object != i)
-					{
-						if (prev != NULL) current = prev->nextNode;
-						else if (prev == NULL) current = map[x][y].nextNode;
-						continue;
+						if (current->object != i)
+						{
+							if (prev != NULL) current = prev->nextNode;
+							else if (prev == NULL) current = map[x][y].nextNode;
+							continue;
+						}
+					default:
+						break;
 					}
-				default:
-					break;
+
+					prev = current;
+					current = current->nextNode;
 				}
-
-				prev = current;
-				current = current->nextNode;
 			}
 		}
 	}
+
+	if (!isPlaying) gameStart++;
 
 	if (playerDyingCount == 8) gameOver = true;
 
@@ -581,7 +539,7 @@ void Update(int value)
 			isPlaying = false;
 			reStart();
 		}
-	}
+	}	
 
 	glutPostRedisplay();
 }
